@@ -19,9 +19,13 @@
       --card:#ffffff;
       --border:rgba(15, 23, 42, .08);
       --shadow:0 25px 70px rgba(0,0,0,.12);
+      --shadow-lg:0 35px 90px rgba(0,0,0,.15);
       --radius-lg:28px;
       --radius-md:18px;
       --radius-sm:12px;
+      --gradient-primary:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-accent:linear-gradient(135deg, #ff8a1f 0%, #ff6b6b 100%);
+      --gradient-bg:linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
     }
 
     *{margin:0;padding:0;box-sizing:border-box}
@@ -29,13 +33,25 @@
     body{
       font-family:Inter,system-ui,-apple-system,sans-serif;
       color:var(--text);
-      background:
-        radial-gradient(900px 520px at 12% 8%, rgba(47, 125, 74, .16) 0%, rgba(47, 125, 74, 0) 60%),
-        radial-gradient(1000px 600px at 88% 0%, rgba(255, 138, 31, .22) 0%, rgba(255, 138, 31, 0) 55%),
-        linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      background:var(--gradient-bg);
       overflow-x:hidden;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      position:relative;
+    }
+    
+    body::before{
+      content:'';
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      background:
+        radial-gradient(800px 400px at 20% 10%, rgba(102, 126, 234, .08) 0%, rgba(102, 126, 234, 0) 60%),
+        radial-gradient(600px 300px at 80% 20%, rgba(168, 85, 247, .06) 0%, rgba(168, 85, 247, 0) 60%);
+      pointer-events:none;
+      z-index:-1;
     }
 
     a{color:inherit;text-decoration:none}
@@ -44,10 +60,10 @@
       position:sticky;
       top:0;
       z-index:50;
-      backdrop-filter:saturate(140%) blur(10px);
-      background:rgba(250,250,247,.72);
+      backdrop-filter:saturate(140%) blur(20px);
+      background:rgba(250,250,247,.85);
       border-bottom:1px solid rgba(15, 23, 42, .06);
-      box-shadow:0 10px 30px rgba(0,0,0,.05);
+      box-shadow:0 10px 30px rgba(0,0,0,.08);
     }
     .topbar-inner{
       max-width:1200px;
@@ -64,98 +80,128 @@
       gap:10px;
       font-weight:900;
       letter-spacing:.02em;
+      font-size:20px;
+      color:var(--green);
+    }
+    .brand img{
+      height:40px;
+      width:auto;
+      display:block;
+      border-radius:8px;
+      box-shadow:0 4px 12px rgba(0,0,0,.1);
+    }
+    .brand-text{
+      font-size:20px;
+      font-weight:900;
+      letter-spacing:.02em;
+      color:var(--green);
+      display:none; /* Hidden by default, shown when image fails */
     }
     .brand img{height:36px;width:auto;display:block}
     .back{
       display:inline-flex;
       align-items:center;
       gap:10px;
-      padding:10px 14px;
-      border-radius:12px;
+      padding:12px 18px;
+      border-radius:16px;
       border:1px solid rgba(15, 23, 42, .10);
-      background:#fff;
+      background:rgba(255,255,255,.95);
       font-weight:700;
       color:#0f172a;
+      transition:all 0.3s ease;
+    }
+    .back:hover{
+      background:rgba(255,255,255,1);
+      transform:translateY(-2px);
+      box-shadow:0 8px 20px rgba(0,0,0,.1);
     }
 
     .wrap{
       max-width:1200px;
       margin:0 auto;
-      padding:40px 20px 80px;
-      display:grid;
-      grid-template-columns: minmax(320px, 1fr) minmax(360px, 1.1fr);
-      gap:36px;
-      align-items:stretch;
-    }
-
-    .side{
-      padding:34px;
-      border-radius:var(--radius-lg);
-      background:linear-gradient(160deg, var(--green) 0%, var(--green-dark) 100%);
-      color:#fff;
-      box-shadow:0 30px 80px rgba(0,0,0,.18);
-      position:relative;
-      overflow:hidden;
+      padding:60px 20px;
       display:flex;
-      flex-direction:column;
+      align-items:center;
       justify-content:center;
-    }
-    .side::after{
-      content:"";
-      position:absolute;
-      inset:-40px;
-      background:
-        radial-gradient(520px 340px at 10% 15%, rgba(255,255,255,.20) 0%, rgba(255,255,255,0) 60%),
-        radial-gradient(520px 340px at 80% 10%, rgba(255, 138, 31, .35) 0%, rgba(255, 138, 31, 0) 60%);
-      pointer-events:none;
-    }
-    .side h1{
-      position:relative;
-      font-size:48px;
-      line-height:1.05;
-      letter-spacing:-.03em;
-      margin-top:0;
-    }
-    .side p{
-      position:relative;
-      margin-top:14px;
-      opacity:.95;
-      max-width:44ch;
+      min-height:100vh;
     }
 
-    .benefits{
-      position:relative;
-      margin-top:22px;
-      display:grid;
-      gap:10px;
-      font-size:14px;
+    .hero-section{
+      text-align:center;
+      margin-bottom:40px;
+      animation:fadeInUp 0.8s ease both;
     }
-    .benefit{
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.18);
-      padding:14px 16px;
+    .hero-content{
+      max-width:600px;
+      margin:0 auto;
+    }
+    .hero-title{
+      font-size:48px;
+      font-weight:900;
+      color:var(--text);
+      margin-bottom:16px;
+      background:var(--gradient-primary);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      padding:20px 40px;
+      border-radius:var(--radius-lg);
+      display:inline-block;
+      box-shadow:var(--shadow-lg);
+    }
+    .hero-subtitle{
+      font-size:18px;
+      color:var(--muted);
+      margin-bottom:24px;
+      font-weight:500;
+    }
+    .hero-benefits{
+      display:flex;
+      justify-content:center;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+    .hero-benefit{
+      background:rgba(255,255,255,.1);
+      border:1px solid rgba(255,255,255,.2);
+      padding:12px 20px;
       border-radius:var(--radius-md);
       font-weight:600;
+      font-size:14px;
+      backdrop-filter:blur(10px);
     }
 
     .card{
       background:var(--card);
       border:1px solid var(--border);
       border-radius:var(--radius-lg);
-      box-shadow:var(--shadow);
+      box-shadow:var(--shadow-lg);
       overflow:hidden;
-      animation:fadeUp .5s ease both;
+      animation:fadeInUp 0.8s ease both;
+      backdrop-filter:blur(20px);
+      margin:0 auto;
     }
 
     @keyframes fadeUp{
       from{opacity:0; transform:translateY(16px)}
       to{opacity:1; transform:translateY(0)}
     }
+    
+    @keyframes float{
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(5deg); }
+    }
+    
+    @keyframes fadeInUp{
+      from{opacity:0; transform:translateY(30px)}
+      to{opacity:1; transform:translateY(0)}
+    }
 
     .card-head{
-      padding:26px 26px 18px;
+      padding:30px 30px 20px;
       border-bottom:1px solid rgba(15, 23, 42, .06);
-      background:linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      background:linear-gradient(180deg, #ffffff 0%, rgba(248, 250, 252, 0.8) 100%);
+      backdrop-filter:blur(10px);
     }
 
     .stepper{
@@ -168,8 +214,8 @@
       display:inline-flex;
       align-items:center;
       gap:8px;
-      padding:8px 12px;
-      border-radius:999px;
+      padding:10px 14px;
+      border-radius:20px;
       background:rgba(15, 23, 42, .04);
       border:1px solid rgba(15, 23, 42, .08);
       color:#0f172a;
@@ -177,25 +223,30 @@
       font-size:12px;
       letter-spacing:.06em;
       text-transform:uppercase;
+      transition:all 0.3s ease;
     }
     .chip.active{
-      background:rgba(47, 125, 74, .10);
-      border-color:rgba(47, 125, 74, .22);
-      color:#155a37;
+      background:var(--gradient-primary);
+      border-color:rgba(47, 125, 74, .3);
+      color:#fff;
+      box-shadow:0 4px 12px rgba(47, 125, 74, .3);
     }
     .chip.done{
-      background:rgba(255, 138, 31, .10);
-      border-color:rgba(255, 138, 31, .22);
-      color:#8a3e00;
+      background:var(--gradient-accent);
+      border-color:rgba(255, 138, 31, .3);
+      color:#fff;
+      box-shadow:0 4px 12px rgba(255, 138, 31, .3);
     }
 
     .card-body{padding:22px}
 
     .title{
-      font-size:24px;
+      font-size:28px;
       letter-spacing:-.02em;
-      margin-top:16px;
+      margin-top:20px;
       font-weight:800;
+      color:var(--text);
+      text-shadow:0 2px 4px rgba(0,0,0,.05);
     }
     .subtitle{color:var(--muted);margin-top:6px;font-size:14px}
 
@@ -205,7 +256,13 @@
       gap:16px;
     }
 
-    label{font-size:13px;color:#0f172a;font-weight:800}
+    label{
+      font-size:14px;
+      color:#0f172a;
+      font-weight:800;
+      margin-bottom:6px;
+      display:block;
+    }
 
     .field{
       display:grid;
@@ -214,31 +271,24 @@
 
     input, textarea, select{
       width:100%;
-      padding:16px 16px;
+      padding:18px 16px;
       border-radius:var(--radius-md);
       border:1px solid rgba(15, 23, 42, .12);
-      background:#fff;
+      background:rgba(255,255,255,.95);
       font-family:inherit;
       font-size:15px;
       outline:none;
       transition:border .2s ease, box-shadow .2s ease, transform .12s ease;
+      backdrop-filter:blur(10px);
     }
     input:hover, textarea:hover, select:hover{
-      transform:translateY(-1px);
+      transform:translateY(-2px);
+      box-shadow:0 8px 20px rgba(0,0,0,.1);
     }
-    textarea{min-height:120px;resize:vertical}
-
-    select{
-      appearance:none;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,1), rgba(255,255,255,1)) padding-box,
-        linear-gradient(180deg, rgba(15, 23, 42, .12), rgba(15, 23, 42, .12)) border-box;
-      background-color:#fff;
-    }
-
     input:focus, textarea:focus, select:focus{
-      border-color:rgba(47, 125, 74, .45);
-      box-shadow:0 0 0 4px rgba(47, 125, 74, .12);
+      border-color:rgba(47, 125, 74, .5);
+      box-shadow:0 0 0 6px rgba(47, 125, 74, .2);
+      background:rgba(255,255,255,1);
     }
 
     .row{
@@ -280,14 +330,27 @@
       gap:10px;
     }
     .btn-primary{
-      background:linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
+      background:var(--gradient-primary);
       color:#fff;
-      box-shadow:0 18px 40px rgba(47, 125, 74, .28);
+      box-shadow:0 18px 40px rgba(47, 125, 74, .35);
+      border:none;
+      transition:all 0.3s ease;
+    }
+    .btn-primary:hover{
+      transform:translateY(-2px) scale(1.02);
+      box-shadow:0 25px 50px rgba(47, 125, 74, .45);
     }
     .btn-ghost{
-      background:#f1f5f9;
+      background:rgba(255,255,255,.95);
       color:#0f172a;
       border:1px solid rgba(15, 23, 42, .08);
+      backdrop-filter:blur(10px);
+      transition:all 0.3s ease;
+    }
+    .btn-ghost:hover{
+      background:rgba(255,255,255,1);
+      transform:translateY(-2px);
+      box-shadow:0 8px 20px rgba(0,0,0,.1);
     }
 
     .btn-link{
@@ -299,18 +362,25 @@
       border-radius:12px;
       cursor:pointer;
     }
-    .btn-link:hover{background:rgba(37, 99, 235, .08)}
+    .btn-link:hover{
+      background:rgba(37, 99, 235, .1);
+      transform:translateY(-1px);
+    }
 
     .loc-btn{
       width:max-content;
-      background:#2563eb;
+      background:var(--gradient-accent);
       color:#fff;
       border-radius:12px;
-      padding:12px 14px;
-      box-shadow:0 14px 28px rgba(37, 99, 235, .20);
+      padding:12px 16px;
+      box-shadow:0 14px 28px rgba(37, 99, 235, .25);
       border:1px solid rgba(255,255,255,.25);
+      transition:all 0.3s ease;
     }
-    .loc-btn:hover{transform:translateY(-1px); box-shadow:0 18px 36px rgba(37, 99, 235, .24)}
+    .loc-btn:hover{
+      transform:translateY(-2px) scale(1.02);
+      box-shadow:0 18px 36px rgba(37, 99, 235, .35);
+    }
 
     .details-grid{
       display:grid;
@@ -330,28 +400,38 @@
       display:inline-flex;
       align-items:center;
       gap:10px;
-      padding:10px 12px;
-      border-radius:14px;
+      padding:12px 16px;
+      border-radius:16px;
       border:1px solid rgba(15, 23, 42, .10);
       background:rgba(15, 23, 42, .02);
       cursor:pointer;
       user-select:none;
       font-weight:800;
       color:#0f172a;
+      transition:all 0.3s ease;
+    }
+    .radio:hover{
+      background:rgba(15, 23, 42, .05);
+      transform:translateY(-1px);
+    }
+    .radio input:checked + span{
+      background:var(--gradient-primary);
+      color:#fff;
     }
     .radio input{width:18px;height:18px}
 
     .hint{color:var(--muted);font-size:13px}
     .note{
-      margin-top:14px;
-      padding:14px 16px;
+      margin-top:16px;
+      padding:16px 18px;
       border-radius:var(--radius-md);
       border:1px solid rgba(255, 138, 31, .25);
       background:var(--accent-soft);
       color:#7a3600;
       font-size:13px;
-      animation:fadeUp .3s ease both;
+      animation:fadeUp .4s ease both;
       display:none;
+      backdrop-filter:blur(10px);
     }
     .note.show{display:block}
 
@@ -365,26 +445,225 @@
 
     .hidden{display:none !important}
 
-    .footer-mini{
-      margin-top:14px;
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.6;
+    .loading {
+      opacity: 0.7;
+      pointer-events: none;
+      position: relative;
+    }
+    .loading::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      margin: -10px 0 0 -10px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .error {
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+    }
+    .success {
+      border-color: var(--green) !important;
+      box-shadow: 0 0 0 3px rgba(47, 125, 74, 0.1) !important;
+    }
+
+    .otp-timer {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .terms-checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+    .terms-checkbox input {
+      margin-top: 2px;
+      width: 16px;
+      height: 16px;
+    }
+    .terms-checkbox label {
+      line-height: 1.4;
+      color: var(--text);
+    }
+    .terms-checkbox a {
+      color: var(--accent);
+      text-decoration: underline;
     }
 
     @media (max-width: 980px){
-      .wrap{grid-template-columns:1fr; padding:28px 16px 60px}
-      .side{text-align:center}
-      .side p{margin-left:auto; margin-right:auto}
+      .wrap{
+        padding:40px 16px;
+        flex-direction:column;
+      }
+      .hero-title{
+        font-size:36px;
+        padding:16px 32px;
+      }
+      .hero-subtitle{
+        font-size:16px;
+        margin-bottom:20px;
+      }
+      .hero-benefits{
+        flex-direction:column;
+        gap:12px;
+      }
+      .hero-benefit{
+        padding:10px 16px;
+        font-size:13px;
+      }
     }
 
-    @media (max-width: 520px){
-      .side h1{font-size:36px}
-      .row{grid-template-columns:1fr}
-      .details-grid{grid-template-columns:1fr}
-      .card-body{padding:18px}
-      .card-head{padding:18px 18px 12px}
-      .btn-wide{min-width:100%}
+    @media (max-width: 768px){
+      .wrap{
+        padding:30px 12px;
+      }
+      .hero-section{
+        margin-bottom:30px;
+      }
+      .hero-title{
+        font-size:32px;
+        padding:14px 28px;
+      }
+      .hero-subtitle{
+        font-size:15px;
+        margin-bottom:16px;
+      }
+      .hero-benefits{
+        gap:10px;
+      }
+      .hero-benefit{
+        padding:8px 12px;
+        font-size:12px;
+      }
+      .card{
+        margin:0 auto;
+        max-width:100%;
+      }
+      .card-head{
+        padding:20px 20px 16px;
+      }
+      .stepper{
+        justify-content:center;
+        gap:8px;
+      }
+      .chip{
+        padding:8px 12px;
+        font-size:11px;
+      }
+      .title{
+        font-size:20px;
+        margin-top:16px;
+      }
+      .subtitle{
+        font-size:13px;
+        margin-top:4px;
+      }
+      .form{
+        margin-top:16px;
+        gap:12px;
+      }
+      .field{
+        gap:6px;
+      }
+      input, textarea, select{
+        padding:14px 14px;
+        font-size:14px;
+      }
+      .btn{
+        padding:12px 16px;
+        font-size:13px;
+      }
+      .actions{
+        flex-direction:column;
+        gap:8px;
+      }
+      .btn-wide{
+        min-width:100%;
+        padding:12px 16px;
+      }
+    }
+
+    @media (max-width: 480px){
+      .wrap{
+        padding:20px 8px;
+      }
+      .hero-title{
+        font-size:28px;
+        padding:12px 24px;
+      }
+      .hero-subtitle{
+        font-size:14px;
+        margin-bottom:16px;
+      }
+      .hero-benefits{
+        gap:8px;
+      }
+      .hero-benefit{
+        padding:6px 12px;
+        font-size:12px;
+      }
+      .card-head{
+        padding:16px 16px 12px;
+      }
+      .stepper{
+        gap:6px;
+      }
+      .chip{
+        padding:6px 10px;
+        font-size:10px;
+      }
+      .title{
+        font-size:18px;
+        margin-top:12px;
+      }
+      .subtitle{
+        font-size:12px;
+        margin-top:4px;
+      }
+      .form{
+        margin-top:12px;
+        gap:8px;
+      }
+      .field{
+        gap:4px;
+      }
+      input, textarea, select{
+        padding:12px 12px;
+        font-size:13px;
+      }
+      .btn{
+        padding:10px 14px;
+        font-size:12px;
+      }
+      .otp-row{
+        flex-direction:column;
+        gap:8px;
+      }
+      .otp-row input{
+        max-width:100%;
+      }
+      .details-grid{
+        grid-template-columns:1fr;
+        gap:8px;
+      }
+      .address-type{
+        flex-direction:column;
+        gap:12px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -396,24 +675,29 @@
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <img src="/images/bharosa.png" alt="BHAROSA" />
+        <img src="images/bharosa.png" alt="BHAROSA" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB3b3gAAAAAAAAAAAAEUgAAAAA'" />
+        <span class="brand-text">BHAROSA</span>
       </div>
       <a class="back" href="index.html" aria-label="Back to home">← Back</a>
     </div>
   </div>
 
   <main class="wrap">
-    <aside class="side">
-      <h1>Join BHAROSA</h1>
-      <p>Sign in with your email or mobile number, verify with OTP, then add your delivery details.</p>
-      <div class="benefits">
-        <div class="benefit">✔ ₹10 lifetime membership (one-time)</div>
-        <div class="benefit">✔ Fast local delivery from your trusted store</div>
-        <div class="benefit">✔ No hidden fees</div>
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="hero-content">
+        <h1 class="hero-title">Join BHAROSA</h1>
+        <p class="hero-subtitle">Your trusted local delivery platform</p>
+        <div class="hero-benefits">
+          <div class="hero-benefit">💰 ₹10 lifetime membership</div>
+          <div class="hero-benefit">🚚 Fast local delivery</div>
+          <div class="hero-benefit">✨ No hidden fees</div>
+        </div>
       </div>
-    </aside>
+    </div>
 
-    <section class="card" aria-label="Join flow">
+    <!-- Form Section -->
+    <section class="card" aria-label="Join flow" style="max-width: 500px; width: 100%;">
       <div class="card-head">
         <div class="stepper" aria-label="Steps">
           <div class="chip active" id="chipStep1">1. Login</div>
@@ -434,8 +718,15 @@
               <div class="hint">Example: name@gmail.com or 9876543210</div>
             </div>
 
+            <div class="terms-checkbox">
+              <input type="checkbox" id="termsAccepted" required />
+              <label for="termsAccepted">
+                I agree to the <a href="#" onclick="alert('Terms and conditions would open here')">Terms of Service</a> and <a href="#" onclick="alert('Privacy policy would open here')">Privacy Policy</a>
+              </label>
+            </div>
+
             <div class="actions">
-              <button class="btn btn-primary" type="submit">Send OTP →</button>
+              <button class="btn btn-primary" type="submit" id="sendOtpBtn">Send OTP →</button>
               <button class="btn btn-ghost" type="button" id="demoFill">Demo Fill</button>
             </div>
 
@@ -451,9 +742,10 @@
               <label for="otp">Enter OTP</label>
               <div class="otp-row">
                 <input id="otp" name="otp" inputmode="numeric" placeholder="6-digit OTP" maxlength="6" autocomplete="one-time-code" required />
-                <button class="btn btn-ghost" type="button" id="resendOtp">Resend</button>
+                <button class="btn btn-ghost" type="button" id="resendOtp" disabled>Resend</button>
               </div>
               <div class="hint" id="sentTo">OTP sent.</div>
+              <div class="otp-timer" id="otpTimer"></div>
             </div>
 
             <div class="actions">
@@ -571,15 +863,15 @@
 
     const sentTo = document.getElementById('sentTo');
 
-    const demoFillBtn = document.getElementById('demoFill');
+    const sendOtpBtn = document.getElementById('sendOtpBtn');
     const resendOtpBtn = document.getElementById('resendOtp');
-    const backToStep1Btn = document.getElementById('backToStep1');
-    const backToStep2Btn = document.getElementById('backToStep2');
-    const cancelDetailsBtn = document.getElementById('cancelDetails');
-    const useLocationBtn = document.getElementById('useLocation');
+    const otpTimerEl = document.getElementById('otpTimer');
+    const termsAccepted = document.getElementById('termsAccepted');
 
     let generatedOtp = null;
     let savedIdentifier = null;
+    let otpTimer = null;
+    let resendTimeout = 30; // 30 seconds
 
     function setChips(activeStep){
       [chip1, chip2, chip3].forEach(c => { c.classList.remove('active'); });
@@ -604,19 +896,83 @@
       noteEl.classList.toggle('show', Boolean(showIt));
     }
 
-    function normalizeIdentifier(value){
-      return (value || '').trim();
+    function setLoading(button, loading) {
+      if (loading) {
+        button.classList.add('loading');
+        button.disabled = true;
+        button.textContent = 'Sending...';
+      } else {
+        button.classList.remove('loading');
+        button.disabled = false;
+        button.textContent = 'Send OTP →';
+      }
     }
 
-    function isValidMobile(value){
-      return /^\d{10}$/.test(value);
+    function validateIdentifier(value) {
+      const input = document.getElementById('identifier');
+      const valid = isValidMobile(value) || isValidEmail(value);
+      
+      if (value && !valid) {
+        input.classList.add('error');
+        input.classList.remove('success');
+        return false;
+      } else if (value && valid) {
+        input.classList.remove('error');
+        input.classList.add('success');
+        return true;
+      } else {
+        input.classList.remove('error', 'success');
+        return false;
+      }
     }
 
-    function isValidEmail(value){
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    function startOtpTimer() {
+      let timeLeft = resendTimeout;
+      resendOtpBtn.disabled = true;
+      
+      otpTimer = setInterval(() => {
+        otpTimerEl.textContent = `Resend OTP in ${timeLeft} seconds`;
+        timeLeft--;
+        
+        if (timeLeft < 0) {
+          clearInterval(otpTimer);
+          otpTimerEl.textContent = '';
+          resendOtpBtn.disabled = false;
+          resendOtpBtn.textContent = 'Resend OTP';
+        }
+      }, 1000);
+    }
+
+    function saveFormProgress(step, data) {
+      try {
+        const progress = { step, ...data, timestamp: Date.now() };
+        localStorage.setItem('bharosa_join_progress', JSON.stringify(progress));
+      } catch (e) {
+        // ignore storage issues
+      }
+    }
+
+    function loadFormProgress() {
+      try {
+        const progress = JSON.parse(localStorage.getItem('bharosa_join_progress'));
+        if (progress && Date.now() - progress.timestamp < 24 * 60 * 60 * 1000) { // 24 hours
+          return progress;
+        }
+      } catch (e) {
+        // ignore
+      }
+      return null;
+    }
+
+    function clearFormProgress() {
+      localStorage.removeItem('bharosa_join_progress');
     }
 
     function goToStep1(){
+      if (otpTimer) {
+        clearInterval(otpTimer);
+        otpTimer = null;
+      }
       show(step1); hide(step2); hide(step3);
       setChips(1);
       cardTitle.textContent = 'Enter your email or mobile number';
@@ -627,6 +983,7 @@
       identifier.focus();
       chip1.classList.remove('done');
       chip2.classList.remove('done');
+      saveFormProgress(1, { identifier: identifier.value.trim() });
     }
 
     function generateOtp(){
@@ -635,6 +992,7 @@
     }
 
     async function sendOtp(target){
+      setLoading(sendOtpBtn, true);
       try {
         const res = await fetch('/api/send-otp', {
           method: 'POST',
@@ -643,7 +1001,7 @@
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Failed to send OTP');
-        setNote(note1, data.note || 'OTP sent.', true);
+        setNote(note1, data.note || 'OTP sent successfully.', true);
         sentTo.textContent = 'OTP sent to ' + target;
         // Do NOT reveal the OTP in real flow
       } catch (e) {
@@ -652,6 +1010,8 @@
         setNote(note1, 'Server offline – simulated OTP sent.', true);
         setNote(note2, 'Demo: your OTP is ' + otp, true);
         sentTo.textContent = 'OTP sent to ' + target;
+      } finally {
+        setLoading(sendOtpBtn, false);
       }
     }
 
@@ -662,6 +1022,8 @@
       cardSubtitle.textContent = 'Enter the OTP sent to your email/mobile to continue.';
       otpInput.value = '';
       otpInput.focus();
+      startOtpTimer();
+      saveFormProgress(2, { identifier: savedIdentifier });
     }
 
     function goToStep3(){
@@ -674,11 +1036,17 @@
         mobileEl.value = savedIdentifier;
       }
       document.getElementById('fullName').focus();
+      saveFormProgress(3, { identifier: savedIdentifier });
     }
 
     formStep1.addEventListener('submit', (e) => {
       e.preventDefault();
       const value = normalizeIdentifier(identifier.value);
+
+      if (!termsAccepted.checked) {
+        setNote(note1, 'Please accept the terms and conditions.', true);
+        return;
+      }
 
       const valid = isValidMobile(value) || isValidEmail(value);
       if (!valid) {
@@ -761,9 +1129,12 @@
           locality,
           city,
           state,
-          pincode
+          pincode,
+          identifier: savedIdentifier,
+          addressType: document.querySelector('input[name="addressType"]:checked')?.value || 'Home'
         };
         localStorage.setItem('bharosa_user', JSON.stringify(user));
+        clearFormProgress();
       } catch (e) {
         // ignore storage issues
       }
@@ -775,8 +1146,9 @@
     });
 
     resendOtpBtn.addEventListener('click', () => {
-      if (!savedIdentifier) return;
+      if (!savedIdentifier || resendOtpBtn.disabled) return;
       sendOtp(savedIdentifier);
+      startOtpTimer();
     });
 
     backToStep1Btn.addEventListener('click', () => {
@@ -836,8 +1208,51 @@
       });
     }
 
+    // Real-time validation
+    identifier.addEventListener('input', (e) => {
+      validateIdentifier(e.target.value.trim());
+      setNote(note1, '', false);
+    });
+
+    // Load saved progress
+    const savedProgress = loadFormProgress();
+    if (savedProgress) {
+      if (savedProgress.step >= 1 && savedProgress.identifier) {
+        identifier.value = savedProgress.identifier;
+        validateIdentifier(savedProgress.identifier);
+        savedIdentifier = savedProgress.identifier;
+      }
+      if (savedProgress.step >= 2) {
+        goToStep2();
+      }
+      if (savedProgress.step >= 3) {
+        // Load form data if available
+        const savedUser = localStorage.getItem('bharosa_user');
+        if (savedUser) {
+          try {
+            const user = JSON.parse(savedUser);
+            document.getElementById('fullName').value = user.name || '';
+            document.getElementById('mobile').value = user.contact || '';
+            document.getElementById('address').value = user.address || '';
+            document.getElementById('locality').value = user.locality || '';
+            document.getElementById('city').value = user.city || '';
+            document.getElementById('state').value = user.state || '';
+            document.getElementById('pincode').value = user.pincode || '';
+            if (user.addressType) {
+              document.querySelector(`input[name="addressType"][value="${user.addressType}"]`).checked = true;
+            }
+            goToStep3();
+          } catch (e) {
+            // ignore
+          }
+        }
+      }
+    }
+
     demoFillBtn.addEventListener('click', () => {
       identifier.value = '9876543210';
+      termsAccepted.checked = true;
+      validateIdentifier(identifier.value);
       setNote(note1, '', false);
       identifier.focus();
     });
