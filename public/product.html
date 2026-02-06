@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product – BHAROSA Store</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:rgba(15, 23, 42, .10);
+      --shadow:0 18px 55px rgba(0,0,0,.10);
+      --fk:#2874f0;
+      --fk-dark:#1e5fcd;
+      --accent:#ff8a1f;
+      --radius:22px;
+      --container:1200px;
+      --header-h:72px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:Inter,system-ui,-apple-system,sans-serif;
+      background:
+        radial-gradient(900px 520px at 15% 0%, rgba(40,116,240,.12) 0%, rgba(40,116,240,0) 60%),
+        radial-gradient(900px 520px at 85% 0%, rgba(255,138,31,.12) 0%, rgba(255,138,31,0) 58%),
+        var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+    button{font-family:inherit}
+
+    .container{max-width:min(var(--container), 94vw); margin:0 auto; padding:0 18px}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:80;
+      background:linear-gradient(180deg, rgba(40,116,240,1), rgba(30,95,205,1));
+      border-bottom:1px solid rgba(255, 255, 255, .10);
+    }
+
+    .topbar-inner{
+      height:var(--header-h);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .brand{display:flex;align-items:center;gap:10px;font-weight:950}
+    .brand img{height:34px}
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.22);
+      background:rgba(255,255,255,.12);
+      font-weight:900;
+      font-size:13px;
+      cursor:pointer;
+      color:#fff;
+    }
+
+    .wrap{padding:18px 0 60px}
+
+    .panel{
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(15, 23, 42, .10);
+      border-radius:var(--radius);
+      box-shadow:0 18px 60px rgba(0,0,0,.10);
+      overflow:hidden;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap:18px;
+      padding:18px;
+      align-items:start;
+    }
+
+    .imgbox{
+      border-radius:20px;
+      overflow:hidden;
+      border:1px solid rgba(15, 23, 42, .10);
+      background:#fff;
+    }
+    .imgbox img{width:100%; height:420px; object-fit:cover}
+
+    .info h1{font-size:28px; letter-spacing:-.03em; line-height:1.15}
+    .info p{margin-top:10px; color:var(--muted); font-weight:700; line-height:1.75}
+
+    .row{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:14px; flex-wrap:wrap}
+
+    .price{font-size:28px; font-weight:950}
+    .mrp{color:var(--muted); font-weight:900; text-decoration:line-through; margin-left:10px}
+
+    .rating{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:rgba(16, 185, 129, .12);
+      border:1px solid rgba(16, 185, 129, .22);
+      color:#065f46;
+      font-weight:950;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:rgba(255, 138, 31, .12);
+      border:1px solid rgba(255, 138, 31, .22);
+      color:#7a3600;
+      font-weight:950;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+    }
+
+    .actions{margin-top:16px; display:flex; gap:12px; flex-wrap:wrap}
+
+    .btn{
+      border:0;
+      cursor:pointer;
+      padding:12px 14px;
+      border-radius:16px;
+      font-weight:950;
+      font-size:14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .btn-primary{background:var(--fk); color:#fff; box-shadow:0 16px 36px rgba(40,116,240,.22)}
+    .btn-primary:hover{transform:translateY(-1px); box-shadow:0 20px 44px rgba(40,116,240,.26)}
+
+    .btn-ghost{background:rgba(15,23,42,.04); border:1px solid rgba(15,23,42,.10); color:#0f172a}
+
+    .note{margin-top:12px; color:var(--muted); font-size:13px; font-weight:750; line-height:1.6}
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform: translateX(-50%) translateY(16px);
+      background:rgba(15, 23, 42, .92);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:999px;
+      padding:12px 14px;
+      font-weight:900;
+      font-size:13px;
+      box-shadow:0 18px 55px rgba(0,0,0,.24);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
+      z-index:140;
+      max-width:min(720px, 92vw);
+      text-align:center;
+    }
+    .toast.show{opacity:1; transform: translateX(-50%) translateY(0)}
+
+    @media (max-width: 860px){
+      .grid{grid-template-columns:1fr}
+      .imgbox img{height:300px}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none !important; animation:none !important}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <div class="topbar-inner">
+        <a class="brand" href="shop.html" aria-label="Back to store">
+          <img src="bharosa.png" alt="BHAROSA" />
+        </a>
+        <a class="pill" href="checkout.html">Cart / Checkout</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container wrap">
+    <section class="panel">
+      <div class="grid">
+        <div class="imgbox"><img id="img" alt="" /></div>
+        <div class="info">
+          <div class="row" style="justify-content:flex-start">
+            <span class="tag" id="tag">Deal</span>
+            <span class="rating" id="rating">★ 0.0</span>
+          </div>
+          <h1 id="name">Loading…</h1>
+          <p id="desc"></p>
+
+          <div class="row">
+            <div>
+              <span class="price" id="price">₹0</span>
+              <span class="mrp" id="mrp">₹0</span>
+            </div>
+            <div class="tag" id="off">0% off</div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-primary" id="add" type="button">Add to cart</button>
+            <a class="btn btn-ghost" href="checkout.html">Go to checkout</a>
+          </div>
+
+          <div class="note">Real checkout, totals and order creation are handled by the backend when running with the server.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    function qs(name){
+      const u = new URL(window.location.href);
+      return u.searchParams.get(name);
+    }
+    function money(n){return '₹' + Number(n || 0).toFixed(0)}
+
+    function loadCart(){
+      try {
+        return JSON.parse(localStorage.getItem('bharosa_cart') || '{}') || {};
+      } catch (e) {
+        return {};
+      }
+    }
+    function saveCart(cart){
+      try { localStorage.setItem('bharosa_cart', JSON.stringify(cart)); } catch (e) {}
+    }
+
+    let toastTimer = null;
+    function showToast(msg){
+      const t = document.getElementById('toast');
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add('show');
+      if (toastTimer) window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => t.classList.remove('show'), 1600);
+    }
+
+    async function loadProduct(id){
+      const res = await fetch('/api/products/' + encodeURIComponent(id));
+      if (!res.ok) throw new Error('not found');
+      const data = await res.json();
+      return data.product;
+    }
+
+    (async function main(){
+      const id = qs('id');
+      if (!id) {
+        window.location.href = 'shop.html';
+        return;
+      }
+
+      try {
+        const p = await loadProduct(id);
+        document.title = p.name + ' – BHAROSA Store';
+        document.getElementById('img').src = p.img;
+        document.getElementById('img').alt = p.name;
+        document.getElementById('name').textContent = p.name;
+        document.getElementById('desc').textContent = p.desc;
+        document.getElementById('price').textContent = money(p.price);
+        document.getElementById('mrp').textContent = money(p.mrp);
+        document.getElementById('rating').textContent = '★ ' + Number(p.rating || 0).toFixed(1);
+        document.getElementById('tag').textContent = p.tag || 'Deal';
+        const off = Math.max(0, Math.round(((p.mrp - p.price) / p.mrp) * 100));
+        document.getElementById('off').textContent = off + '% off';
+
+        document.getElementById('add').addEventListener('click', () => {
+          const cart = loadCart();
+          cart[p.id] = (cart[p.id] || 0) + 1;
+          saveCart(cart);
+          showToast('Added to cart');
+        });
+      } catch (e) {
+        window.location.href = 'shop.html';
+      }
+    })();
+  </script>
+</body>
+</html>

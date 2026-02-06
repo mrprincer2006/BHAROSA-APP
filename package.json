@@ -1,0 +1,22 @@
+{
+  "name": "bharosa-shop",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node -r dotenv/config src/server.js",
+    "build": "echo 'Build process coming soon'",
+    "test": "echo 'Tests coming soon'"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "nodemailer": "^6.9.13",
+    "razorpay": "^2.9.4",
+    "twilio": "^5.3.5",
+    "dotenv": "^16.4.7",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  }
+}

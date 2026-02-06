@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BHAROSA Analytics Export</title>
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#0b1220;
+      --muted:#6b7280;
+      --border:rgba(15,23,42,.08);
+      --shadow:0 20px 60px rgba(2,6,23,.12);
+      --brand:#2874f0;
+      --brand-dark:#1e5fcd;
+      --accent:#22c55e;
+      --warn:#f59e0b;
+      --danger:#ef4444;
+      --radius-xl:26px;
+      --radius:18px;
+      --container:1000px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:20px;
+    }
+
+    .container{
+      max-width:var(--container);
+      margin:0 auto;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow);
+      padding:24px;
+      margin-bottom:20px;
+    }
+
+    h1{font-size:24px;font-weight:900;margin-bottom:20px}
+    h2{font-size:18px;font-weight:800;margin-bottom:16px}
+    
+    .form-group{
+      margin-bottom:16px;
+    }
+    label{
+      display:block;
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:6px;
+      color:var(--muted);
+    }
+    select, input{
+      width:100%;
+      padding:10px 12px;
+      border:1px solid var(--border);
+      border-radius:8px;
+      font-size:14px;
+    }
+    button{
+      padding:10px 20px;
+      background:var(--brand);
+      color:#fff;
+      border:none;
+      border-radius:8px;
+      font-weight:700;
+      cursor:pointer;
+      transition:background .15s ease;
+    }
+    button:hover{background:var(--brand-dark)}
+    button.secondary{
+      background:transparent;
+      color:var(--brand);
+      border:1px solid var(--brand);
+    }
+    button.secondary:hover{
+      background:var(--brand);
+      color:#fff;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+      gap:20px;
+    }
+
+    .export-section{
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:20px;
+    }
+
+    .file-input-wrapper{
+      position:relative;
+      overflow:hidden;
+      display:inline-block;
+      width:100%;
+    }
+    .file-input-wrapper input[type=file]{
+      position:absolute;
+      left:-9999px;
+    }
+    .file-input-label{
+      display:block;
+      padding:10px 12px;
+      border:2px dashed var(--border);
+      border-radius:8px;
+      text-align:center;
+      cursor:pointer;
+      transition:border-color .15s ease;
+    }
+    .file-input-label:hover{
+      border-color:var(--brand);
+    }
+
+    .progress{
+      width:100%;
+      height:4px;
+      background:var(--border);
+      border-radius:2px;
+      overflow:hidden;
+      margin-top:10px;
+    }
+    .progress-bar{
+      height:100%;
+      background:var(--brand);
+      transition:width .3s ease;
+    }
+
+    .toast{
+      position:fixed;
+      bottom:20px;
+      right:20px;
+      background:var(--brand);
+      color:#fff;
+      padding:12px 20px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:13px;
+      z-index:9999;
+      animation:slideUp 0.3s ease;
+      box-shadow:0 10px 30px rgba(0,0,0,.2);
+    }
+    @keyframes slideUp{
+      from{transform:translateY(100%); opacity:0}
+      to{transform:translateY(0); opacity:1}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Analytics Export & Import</h1>
+    
+    <div class="grid">
+      <!-- Export Section -->
+      <div class="export-section">
+        <h2>Export Reports</h2>
+        
+        <div class="form-group">
+          <label>Report Type</label>
+          <select id="exportType">
+            <option value="orders">Orders Report</option>
+            <option value="products">Products Report</option>
+            <option value="customers">Customers Report</option>
+            <option value="sales">Sales Summary</option>
+            <option value="analytics">Full Analytics</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Date Range</label>
+          <select id="exportPeriod">
+            <option value="7">Last 7 days</option>
+            <option value="30" selected>Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="365">Last year</option>
+            <option value="all">All time</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Format</label>
+          <select id="exportFormat">
+            <option value="csv">CSV</option>
+            <option value="json">JSON</option>
+            <option value="xlsx">Excel (XLSX)</option>
+          </select>
+        </div>
+
+        <button onclick="exportData()">Export Report</button>
+        <div class="progress" id="exportProgress" style="display:none;">
+          <div class="progress-bar" id="exportProgressBar"></div>
+        </div>
+      </div>
+
+      <!-- Import Section -->
+      <div class="export-section">
+        <h2>Import Data</h2>
+        
+        <div class="form-group">
+          <label>Data Type</label>
+          <select id="importType">
+            <option value="products">Products</option>
+            <option value="customers">Customers</option>
+            <option value="orders">Orders</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Select File</label>
+          <div class="file-input-wrapper">
+            <input type="file" id="importFile" accept=".csv,.json,.xlsx">
+            <label for="importFile" class="file-input-label">
+              <span id="fileLabel">Choose file or drag and drop</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Import Options</label>
+          <label style="font-weight:normal;">
+            <input type="checkbox" id="skipDuplicates"> Skip duplicate entries
+          </label>
+          <label style="font-weight:normal;">
+            <input type="checkbox" id="validateData"> Validate data before import
+          </label>
+        </div>
+
+        <button onclick="importData()">Import Data</button>
+        <div class="progress" id="importProgress" style="display:none;">
+          <div class="progress-bar" id="importProgressBar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scheduled Reports -->
+    <div class="card">
+      <h2>Scheduled Reports</h2>
+      <p>Configure automatic email delivery of analytics reports</p>
+      
+      <div class="grid">
+        <div class="form-group">
+          <label>Report Frequency</label>
+          <select id="scheduleFrequency">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Recipients</label>
+          <input type="email" id="scheduleEmail" placeholder="admin@example.com" multiple>
+        </div>
+
+        <div class="form-group">
+          <label>Report Types</label>
+          <label style="font-weight:normal;">
+            <input type="checkbox" checked> Sales Summary
+          </label>
+          <label style="font-weight:normal;">
+            <input type="checkbox" checked> Top Products
+          </label>
+          <label style="font-weight:normal;">
+            <input type="checkbox"> Customer Analytics
+          </label>
+        </div>
+
+        <button onclick="saveSchedule()">Save Schedule</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    document.getElementById('importFile').addEventListener('change', (e) => {
+      const fileName = e.target.files[0]?.name || 'Choose file or drag and drop';
+      document.getElementById('fileLabel').textContent = fileName;
+    });
+
+    async function exportData() {
+      const type = document.getElementById('exportType').value;
+      const period = document.getElementById('exportPeriod').value;
+      const format = document.getElementById('exportFormat').value;
+      
+      showProgress('export');
+      
+      try {
+        const query = new URLSearchParams({ type, period, format });
+        const response = await fetch(`/api/analytics/export?${query}`);
+        
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `bharosa-${type}-${period}.${format}`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+          
+          showToast('Report exported successfully');
+        } else {
+          showToast('Failed to export report');
+        }
+      } catch (error) {
+        console.error('Export error:', error);
+        showToast('Error exporting report');
+      }
+      
+      hideProgress('export');
+    }
+
+    async function importData() {
+      const file = document.getElementById('importFile').files[0];
+      if (!file) {
+        showToast('Please select a file');
+        return;
+      }
+
+      const type = document.getElementById('importType').value;
+      const skipDuplicates = document.getElementById('skipDuplicates').checked;
+      const validateData = document.getElementById('validateData').checked;
+      
+      showProgress('import');
+      
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('type', type);
+      formData.append('skipDuplicates', skipDuplicates);
+      formData.append('validateData', validateData);
+      
+      try {
+        const response = await fetch('/api/analytics/import', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          showToast(`Imported ${result.imported} records successfully`);
+          if (result.errors && result.errors.length > 0) {
+            console.warn('Import errors:', result.errors);
+          }
+        } else {
+          showToast(`Import failed: ${result.error}`);
+        }
+      } catch (error) {
+        console.error('Import error:', error);
+        showToast('Error importing data');
+      }
+      
+      hideProgress('import');
+    }
+
+    function saveSchedule() {
+      const frequency = document.getElementById('scheduleFrequency').value;
+      const email = document.getElementById('scheduleEmail').value;
+      const reportTypes = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+        .map(cb => cb.parentElement.textContent.trim());
+      
+      // Save to localStorage (in production, save to backend)
+      const schedule = { frequency, email, reportTypes };
+      localStorage.setItem('analyticsSchedule', JSON.stringify(schedule));
+      
+      showToast('Report schedule saved');
+    }
+
+    function showProgress(type) {
+      const progress = document.getElementById(`${type}Progress`);
+      const bar = document.getElementById(`${type}ProgressBar`);
+      progress.style.display = 'block';
+      bar.style.width = '0%';
+      
+      // Simulate progress
+      let width = 0;
+      const interval = setInterval(() => {
+        width += Math.random() * 30;
+        if (width > 90) {
+          clearInterval(interval);
+          bar.style.width = '90%';
+        } else {
+          bar.style.width = width + '%';
+        }
+      }, 200);
+    }
+
+    function hideProgress(type) {
+      setTimeout(() => {
+        const progress = document.getElementById(`${type}Progress`);
+        const bar = document.getElementById(`${type}ProgressBar`);
+        bar.style.width = '100%';
+        setTimeout(() => {
+          progress.style.display = 'none';
+          bar.style.width = '0%';
+        }, 500);
+      }, 1000);
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+  </script>
+</body>
+</html>

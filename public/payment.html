@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BHAROSA – Payment</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --green:#2f7d4a;
+      --accent:#ff8a1f;
+      --text:#0f172a;
+      --muted:#64748b;
+      --bg:#fafaf7;
+      --card:#ffffff;
+      --border:rgba(15, 23, 42, .10);
+      --shadow:0 20px 60px rgba(0,0,0,.10);
+      --blue:#2563eb;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:Inter,system-ui,-apple-system,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 520px at 15% 10%, rgba(47, 125, 74, .14) 0%, rgba(47, 125, 74, 0) 60%),
+        radial-gradient(1000px 600px at 85% 0%, rgba(255, 138, 31, .18) 0%, rgba(255, 138, 31, 0) 55%),
+        var(--bg);
+      overflow-x:hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a{color:inherit;text-decoration:none}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:saturate(140%) blur(10px);
+      background:rgba(250,250,247,.72);
+      border-bottom:1px solid rgba(15, 23, 42, .06);
+    }
+    .topbar-inner{
+      max-width:1200px;
+      margin:0 auto;
+      padding:14px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.02em}
+    .brand img{height:36px;width:auto;display:block}
+    .back{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid rgba(15, 23, 42, .10);
+      background:#fff;
+      font-weight:800;
+      color:#0f172a;
+    }
+
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:28px 20px 70px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:24px;
+      align-items:start;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .card-head{
+      padding:22px;
+      border-bottom:1px solid rgba(15, 23, 42, .06);
+      background:linear-gradient(180deg, rgba(250,250,247,1) 0%, rgba(255,255,255,1) 100%);
+    }
+    .title{font-size:26px;letter-spacing:-.02em}
+    .subtitle{color:var(--muted);margin-top:8px;font-size:14px;line-height:1.7}
+
+    .card-body{padding:22px}
+
+    .why{
+      display:grid;
+      gap:12px;
+      margin-top:10px;
+    }
+    .why-item{
+      border:1px solid rgba(15, 23, 42, .08);
+      background:rgba(15, 23, 42, .02);
+      border-radius:18px;
+      padding:14px 14px;
+    }
+    .why-item strong{display:block}
+    .why-item span{display:block;color:var(--muted);font-size:13px;margin-top:4px;line-height:1.6}
+
+    .price{
+      display:flex;
+      align-items:flex-end;
+      gap:10px;
+      margin-top:14px;
+    }
+    .price h2{font-size:44px;line-height:1}
+    .price small{color:var(--muted);font-weight:800}
+
+    .paybox{
+      background:linear-gradient(135deg, rgba(47, 125, 74, .96), rgba(47, 125, 74, .78));
+      color:#fff;
+      border-radius:26px;
+      padding:22px;
+      box-shadow:0 18px 60px rgba(0,0,0,.10);
+      border:1px solid rgba(255,255,255,.18);
+      position:relative;
+      overflow:hidden;
+      min-height:340px;
+    }
+    .paybox::after{
+      content:"";
+      position:absolute;
+      inset:-40px;
+      background:
+        radial-gradient(520px 340px at 10% 15%, rgba(255,255,255,.20) 0%, rgba(255,255,255,0) 60%),
+        radial-gradient(520px 340px at 80% 10%, rgba(255, 138, 31, .35) 0%, rgba(255, 138, 31, 0) 60%);
+      pointer-events:none;
+    }
+    .paybox > *{position:relative}
+
+    .paybox h3{font-size:22px;letter-spacing:-.01em}
+    .paybox p{margin-top:8px;opacity:.95;line-height:1.7;font-size:14px}
+
+    .btn{
+      border:0;
+      cursor:pointer;
+      padding:14px 16px;
+      border-radius:16px;
+      font-weight:900;
+      font-family:inherit;
+      font-size:14px;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+    }
+    .btn-pay{
+      background:#fff;
+      color:#0f172a;
+      box-shadow:0 14px 28px rgba(0,0,0,.18);
+      min-width:240px;
+      margin-top:16px;
+    }
+    .btn-pay:hover{transform:translateY(-1px); box-shadow:0 18px 36px rgba(0,0,0,.22)}
+
+    .btn-link{
+      background:transparent;
+      border:0;
+      color:rgba(255,255,255,.92);
+      font-weight:900;
+      padding:12px 0;
+      cursor:pointer;
+      text-decoration:underline;
+      margin-top:10px;
+      display:inline-block;
+    }
+
+    .note{
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.20);
+      background:rgba(255,255,255,.12);
+      color:rgba(255,255,255,.92);
+      font-size:13px;
+      line-height:1.6;
+    }
+
+    .small-note{
+      margin-top:14px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    @media (max-width: 980px){
+      .wrap{grid-template-columns:1fr}
+      .btn-pay{min-width:100%}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{scroll-behavior:auto !important; transition:none !important; animation:none !important}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <img src="bharosa.png" alt="BHAROSA" />
+      </div>
+      <a class="back" href="join.html" aria-label="Back to join">← Back</a>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <section class="card" aria-label="Why 10 rupees">
+      <div class="card-head">
+        <div class="title">Membership Payment</div>
+        <div class="subtitle">We charge ₹10 as a one-time lifetime membership to keep the system simple and to build trust between customers and local stores.</div>
+      </div>
+      <div class="card-body">
+        <div class="price">
+          <h2>₹10</h2>
+          <small>Lifetime</small>
+        </div>
+
+        <div class="why" style="margin-top:18px">
+          <div class="why-item">
+            <strong>Trust & commitment</strong>
+            <span>₹10 makes the membership intentional—serious buyers and serious service.</span>
+          </div>
+          <div class="why-item">
+            <strong>Supports local delivery</strong>
+            <span>This helps maintain operations like order support and delivery coordination.</span>
+          </div>
+          <div class="why-item">
+            <strong>No hidden fees</strong>
+            <span>One-time payment. Transparent pricing. No subscriptions.</span>
+          </div>
+        </div>
+
+        <div class="small-note">After successful payment, you can start ordering from your trusted store.</div>
+      </div>
+    </section>
+
+    <section class="paybox" aria-label="Razorpay checkout">
+      <h3>Pay securely with Razorpay</h3>
+      <p>Click below to pay ₹10. You’ll be redirected back after payment.</p>
+
+      <button class="btn btn-pay" type="button" id="payBtn">Pay ₹10 →</button>
+      <button class="btn-link" type="button" id="skipBtn">Skip (Demo)</button>
+
+      <div class="note" id="payNote">
+        Razorpay integration needs your <strong>Key ID</strong>. For production you must create an <strong>order_id</strong> from your backend.
+      </div>
+    </section>
+  </main>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    // IMPORTANT:
+    // - Replace RAZORPAY_KEY_ID with your actual Razorpay Key ID.
+    // - For production, create an order on your server and pass `order_id`.
+    // - Without backend, payment can open in test mode but verification should be done server-side.
+
+    const RAZORPAY_KEY_ID = 'RAZORPAY_KEY_ID';
+    const AMOUNT_PAISE = 10 * 100;
+
+    function getUserDetails() {
+      try {
+        const raw = localStorage.getItem('bharosa_user');
+        if (!raw) throw new Error('no user');
+        const user = JSON.parse(raw);
+        return {
+          name: user && user.name ? user.name : 'BHAROSA Member',
+          email: user && user.email ? user.email : '',
+          contact: user && user.contact ? user.contact : ''
+        };
+      } catch (e) {
+        return {
+          name: 'BHAROSA Member',
+          email: '',
+          contact: ''
+        };
+      }
+    }
+
+    function openRazorpay() {
+      const user = getUserDetails();
+
+      if (!window.Razorpay) {
+        alert('Razorpay failed to load. Please check internet connection.');
+        return;
+      }
+
+      if (!RAZORPAY_KEY_ID || RAZORPAY_KEY_ID === 'RAZORPAY_KEY_ID') {
+        alert('Add your Razorpay Key ID in payment.html (RAZORPAY_KEY_ID).');
+        return;
+      }
+
+      const options = {
+        key: RAZORPAY_KEY_ID,
+        amount: AMOUNT_PAISE,
+        currency: 'INR',
+        name: 'BHAROSA',
+        description: 'Lifetime Membership',
+        image: 'bharosa.png',
+        // order_id: 'ORDER_ID_FROM_BACKEND',
+        prefill: {
+          name: user.name,
+          email: user.email,
+          contact: user.contact
+        },
+        theme: { color: '#2f7d4a' },
+        handler: function (response) {
+          // NOTE: This is NOT secure verification. For production, verify signature on backend.
+          alert('Payment success (demo). Razorpay Payment ID: ' + response.razorpay_payment_id);
+          window.location.href = 'shop.html';
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.on('payment.failed', function (response) {
+        alert('Payment failed: ' + (response.error && response.error.description ? response.error.description : 'Unknown error'));
+      });
+      rzp.open();
+    }
+
+    document.getElementById('payBtn').addEventListener('click', openRazorpay);
+    document.getElementById('skipBtn').addEventListener('click', () => {
+      alert('Demo: Skipped payment.');
+      window.location.href = 'shop.html';
+    });
+  </script>
+</body>
+</html>

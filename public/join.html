@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Join BHAROSA</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --green:#2f7d4a;
+      --green-dark:#25653c;
+      --accent:#ff8a1f;
+      --accent-soft:#fff3e8;
+      --text:#0f172a;
+      --muted:#64748b;
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --border:rgba(15, 23, 42, .08);
+      --shadow:0 25px 70px rgba(0,0,0,.12);
+      --radius-lg:28px;
+      --radius-md:18px;
+      --radius-sm:12px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    html, body{height:100%}
+    body{
+      font-family:Inter,system-ui,-apple-system,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 520px at 12% 8%, rgba(47, 125, 74, .16) 0%, rgba(47, 125, 74, 0) 60%),
+        radial-gradient(1000px 600px at 88% 0%, rgba(255, 138, 31, .22) 0%, rgba(255, 138, 31, 0) 55%),
+        linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      overflow-x:hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a{color:inherit;text-decoration:none}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:saturate(140%) blur(10px);
+      background:rgba(250,250,247,.72);
+      border-bottom:1px solid rgba(15, 23, 42, .06);
+      box-shadow:0 10px 30px rgba(0,0,0,.05);
+    }
+    .topbar-inner{
+      max-width:1200px;
+      margin:0 auto;
+      padding:14px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      letter-spacing:.02em;
+    }
+    .brand img{height:36px;width:auto;display:block}
+    .back{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid rgba(15, 23, 42, .10);
+      background:#fff;
+      font-weight:700;
+      color:#0f172a;
+    }
+
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:40px 20px 80px;
+      display:grid;
+      grid-template-columns: minmax(320px, 1fr) minmax(360px, 1.1fr);
+      gap:36px;
+      align-items:stretch;
+    }
+
+    .side{
+      padding:34px;
+      border-radius:var(--radius-lg);
+      background:linear-gradient(160deg, var(--green) 0%, var(--green-dark) 100%);
+      color:#fff;
+      box-shadow:0 30px 80px rgba(0,0,0,.18);
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .side::after{
+      content:"";
+      position:absolute;
+      inset:-40px;
+      background:
+        radial-gradient(520px 340px at 10% 15%, rgba(255,255,255,.20) 0%, rgba(255,255,255,0) 60%),
+        radial-gradient(520px 340px at 80% 10%, rgba(255, 138, 31, .35) 0%, rgba(255, 138, 31, 0) 60%);
+      pointer-events:none;
+    }
+    .side h1{
+      position:relative;
+      font-size:48px;
+      line-height:1.05;
+      letter-spacing:-.03em;
+      margin-top:0;
+    }
+    .side p{
+      position:relative;
+      margin-top:14px;
+      opacity:.95;
+      max-width:44ch;
+    }
+
+    .benefits{
+      position:relative;
+      margin-top:22px;
+      display:grid;
+      gap:10px;
+      font-size:14px;
+    }
+    .benefit{
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.18);
+      padding:14px 16px;
+      border-radius:var(--radius-md);
+      font-weight:600;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius-lg);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      animation:fadeUp .5s ease both;
+    }
+
+    @keyframes fadeUp{
+      from{opacity:0; transform:translateY(16px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    .card-head{
+      padding:26px 26px 18px;
+      border-bottom:1px solid rgba(15, 23, 42, .06);
+      background:linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    }
+
+    .stepper{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(15, 23, 42, .04);
+      border:1px solid rgba(15, 23, 42, .08);
+      color:#0f172a;
+      font-weight:800;
+      font-size:12px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+    .chip.active{
+      background:rgba(47, 125, 74, .10);
+      border-color:rgba(47, 125, 74, .22);
+      color:#155a37;
+    }
+    .chip.done{
+      background:rgba(255, 138, 31, .10);
+      border-color:rgba(255, 138, 31, .22);
+      color:#8a3e00;
+    }
+
+    .card-body{padding:22px}
+
+    .title{
+      font-size:24px;
+      letter-spacing:-.02em;
+      margin-top:16px;
+      font-weight:800;
+    }
+    .subtitle{color:var(--muted);margin-top:6px;font-size:14px}
+
+    .form{
+      margin-top:22px;
+      display:grid;
+      gap:16px;
+    }
+
+    label{font-size:13px;color:#0f172a;font-weight:800}
+
+    .field{
+      display:grid;
+      gap:8px;
+    }
+
+    input, textarea, select{
+      width:100%;
+      padding:16px 16px;
+      border-radius:var(--radius-md);
+      border:1px solid rgba(15, 23, 42, .12);
+      background:#fff;
+      font-family:inherit;
+      font-size:15px;
+      outline:none;
+      transition:border .2s ease, box-shadow .2s ease, transform .12s ease;
+    }
+    input:hover, textarea:hover, select:hover{
+      transform:translateY(-1px);
+    }
+    textarea{min-height:120px;resize:vertical}
+
+    select{
+      appearance:none;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,1), rgba(255,255,255,1)) padding-box,
+        linear-gradient(180deg, rgba(15, 23, 42, .12), rgba(15, 23, 42, .12)) border-box;
+      background-color:#fff;
+    }
+
+    input:focus, textarea:focus, select:focus{
+      border-color:rgba(47, 125, 74, .45);
+      box-shadow:0 0 0 4px rgba(47, 125, 74, .12);
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+
+    .actions{
+      margin-top:6px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .actions.split{
+      justify-content:space-between;
+    }
+
+    .btn-wide{
+      min-width:220px;
+      padding:14px 18px;
+      border-radius:16px;
+    }
+
+    .btn{
+      border:0;
+      cursor:pointer;
+      padding:14px 18px;
+      border-radius:var(--radius-md);
+      font-weight:900;
+      font-family:inherit;
+      font-size:14px;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+    }
+    .btn-primary{
+      background:linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
+      color:#fff;
+      box-shadow:0 18px 40px rgba(47, 125, 74, .28);
+    }
+    .btn-ghost{
+      background:#f1f5f9;
+      color:#0f172a;
+      border:1px solid rgba(15, 23, 42, .08);
+    }
+
+    .btn-link{
+      background:transparent;
+      border:0;
+      color:#2563eb;
+      font-weight:900;
+      padding:12px 10px;
+      border-radius:12px;
+      cursor:pointer;
+    }
+    .btn-link:hover{background:rgba(37, 99, 235, .08)}
+
+    .loc-btn{
+      width:max-content;
+      background:#2563eb;
+      color:#fff;
+      border-radius:12px;
+      padding:12px 14px;
+      box-shadow:0 14px 28px rgba(37, 99, 235, .20);
+      border:1px solid rgba(255,255,255,.25);
+    }
+    .loc-btn:hover{transform:translateY(-1px); box-shadow:0 18px 36px rgba(37, 99, 235, .24)}
+
+    .details-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    .span-2{grid-column: 1 / -1}
+
+    .address-type{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-top:2px;
+    }
+    .radio{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(15, 23, 42, .10);
+      background:rgba(15, 23, 42, .02);
+      cursor:pointer;
+      user-select:none;
+      font-weight:800;
+      color:#0f172a;
+    }
+    .radio input{width:18px;height:18px}
+
+    .hint{color:var(--muted);font-size:13px}
+    .note{
+      margin-top:14px;
+      padding:14px 16px;
+      border-radius:var(--radius-md);
+      border:1px solid rgba(255, 138, 31, .25);
+      background:var(--accent-soft);
+      color:#7a3600;
+      font-size:13px;
+      animation:fadeUp .3s ease both;
+      display:none;
+    }
+    .note.show{display:block}
+
+    .otp-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .otp-row input{max-width:220px}
+
+    .hidden{display:none !important}
+
+    .footer-mini{
+      margin-top:14px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    @media (max-width: 980px){
+      .wrap{grid-template-columns:1fr; padding:28px 16px 60px}
+      .side{text-align:center}
+      .side p{margin-left:auto; margin-right:auto}
+    }
+
+    @media (max-width: 520px){
+      .side h1{font-size:36px}
+      .row{grid-template-columns:1fr}
+      .details-grid{grid-template-columns:1fr}
+      .card-body{padding:18px}
+      .card-head{padding:18px 18px 12px}
+      .btn-wide{min-width:100%}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{scroll-behavior:auto !important; transition:none !important; animation:none !important}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <img src="bharosa.png" alt="BHAROSA" />
+      </div>
+      <a class="back" href="index.html" aria-label="Back to home">← Back</a>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <aside class="side">
+      <h1>Join BHAROSA</h1>
+      <p>Sign in with your email or mobile number, verify with OTP, then add your delivery details.</p>
+      <div class="benefits">
+        <div class="benefit">✔ ₹10 lifetime membership (one-time)</div>
+        <div class="benefit">✔ Fast local delivery from your trusted store</div>
+        <div class="benefit">✔ No hidden fees</div>
+      </div>
+    </aside>
+
+    <section class="card" aria-label="Join flow">
+      <div class="card-head">
+        <div class="stepper" aria-label="Steps">
+          <div class="chip active" id="chipStep1">1. Login</div>
+          <div class="chip" id="chipStep2">2. OTP</div>
+          <div class="chip" id="chipStep3">3. Details</div>
+        </div>
+        <div class="title" id="cardTitle">Enter your email or mobile number</div>
+        <div class="subtitle" id="cardSubtitle">We will send you a One Time Password (OTP) for verification.</div>
+      </div>
+
+      <div class="card-body">
+        <!-- Step 1 -->
+        <div id="step1">
+          <form class="form" id="formStep1">
+            <div class="field">
+              <label for="identifier">Email or Mobile</label>
+              <input id="identifier" name="identifier" placeholder="Enter email or 10-digit mobile" autocomplete="username" required />
+              <div class="hint">Example: name@gmail.com or 9876543210</div>
+            </div>
+
+            <div class="actions">
+              <button class="btn btn-primary" type="submit">Send OTP →</button>
+              <button class="btn btn-ghost" type="button" id="demoFill">Demo Fill</button>
+            </div>
+
+            <div class="note" id="note1"></div>
+            <div class="footer-mini">By continuing, you agree to BHAROSA’s terms and privacy policy.</div>
+          </form>
+        </div>
+
+        <!-- Step 2 -->
+        <div id="step2" class="hidden">
+          <form class="form" id="formStep2">
+            <div class="field">
+              <label for="otp">Enter OTP</label>
+              <div class="otp-row">
+                <input id="otp" name="otp" inputmode="numeric" placeholder="6-digit OTP" maxlength="6" autocomplete="one-time-code" required />
+                <button class="btn btn-ghost" type="button" id="resendOtp">Resend</button>
+              </div>
+              <div class="hint" id="sentTo">OTP sent.</div>
+            </div>
+
+            <div class="actions">
+              <button class="btn btn-primary" type="submit">Verify OTP →</button>
+              <button class="btn btn-ghost" type="button" id="backToStep1">← Change email/mobile</button>
+            </div>
+
+            <div class="note" id="note2"></div>
+          </form>
+        </div>
+
+        <!-- Step 3 -->
+        <div id="step3" class="hidden">
+          <form class="form" id="formStep3">
+            <div class="actions">
+              <button class="btn btn-primary loc-btn" type="button" id="useLocation">Use my current location</button>
+            </div>
+
+            <div class="details-grid">
+              <div class="field">
+                <label for="fullName">Name</label>
+                <input id="fullName" name="fullName" placeholder="Name" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="mobile">10-digit mobile number</label>
+                <input id="mobile" name="mobile" inputmode="numeric" placeholder="10-digit mobile number" maxlength="10" autocomplete="tel" required />
+              </div>
+
+              <div class="field">
+                <label for="pincode">Pincode</label>
+                <input id="pincode" name="pincode" inputmode="numeric" placeholder="Pincode" maxlength="6" required />
+              </div>
+              <div class="field">
+                <label for="locality">Locality</label>
+                <input id="locality" name="locality" placeholder="Locality" autocomplete="address-level3" required />
+              </div>
+
+              <div class="field span-2">
+                <label for="address">Address (Area and Street)</label>
+                <textarea id="address" name="address" placeholder="Address (Area and Street)" required></textarea>
+              </div>
+
+              <div class="field">
+                <label for="city">City/District/Town</label>
+                <input id="city" name="city" placeholder="City/District/Town" autocomplete="address-level2" required />
+              </div>
+              <div class="field">
+                <label for="state">State</label>
+                <select id="state" name="state" required>
+                  <option value="" selected>--Select State--</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Delhi">Delhi</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="West Bengal">West Bengal</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="landmark">Landmark (Optional)</label>
+                <input id="landmark" name="landmark" placeholder="Landmark (Optional)" autocomplete="off" />
+              </div>
+              <div class="field">
+                <label for="altPhone">Alternate Phone (Optional)</label>
+                <input id="altPhone" name="altPhone" inputmode="numeric" placeholder="Alternate Phone (Optional)" maxlength="10" autocomplete="tel" />
+              </div>
+            </div>
+
+            <div class="field" style="margin-top:6px">
+              <label>Address Type</label>
+              <div class="address-type" role="radiogroup" aria-label="Address Type">
+                <label class="radio"><input type="radio" name="addressType" value="Home" checked /> Home</label>
+                <label class="radio"><input type="radio" name="addressType" value="Work" /> Work</label>
+              </div>
+            </div>
+
+            <div class="actions split">
+              <button class="btn btn-primary btn-wide" type="submit">SAVE</button>
+              <button class="btn btn-link" type="button" id="cancelDetails">CANCEL</button>
+            </div>
+
+            <div class="note" id="note3"></div>
+            <div class="footer-mini">Real OTP is sent via email (SMTP) or logged for SMS demo. Configure SMTP env vars to receive emails.</div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+
+    const chip1 = document.getElementById('chipStep1');
+    const chip2 = document.getElementById('chipStep2');
+    const chip3 = document.getElementById('chipStep3');
+
+    const cardTitle = document.getElementById('cardTitle');
+    const cardSubtitle = document.getElementById('cardSubtitle');
+
+    const formStep1 = document.getElementById('formStep1');
+    const formStep2 = document.getElementById('formStep2');
+    const formStep3 = document.getElementById('formStep3');
+
+    const identifier = document.getElementById('identifier');
+    const otpInput = document.getElementById('otp');
+
+    const note1 = document.getElementById('note1');
+    const note2 = document.getElementById('note2');
+    const note3 = document.getElementById('note3');
+
+    const sentTo = document.getElementById('sentTo');
+
+    const demoFillBtn = document.getElementById('demoFill');
+    const resendOtpBtn = document.getElementById('resendOtp');
+    const backToStep1Btn = document.getElementById('backToStep1');
+    const backToStep2Btn = document.getElementById('backToStep2');
+    const cancelDetailsBtn = document.getElementById('cancelDetails');
+    const useLocationBtn = document.getElementById('useLocation');
+
+    let generatedOtp = null;
+    let savedIdentifier = null;
+
+    function setChips(activeStep){
+      [chip1, chip2, chip3].forEach(c => { c.classList.remove('active'); });
+      if (activeStep === 1) {
+        chip1.classList.add('active');
+      } else if (activeStep === 2) {
+        chip1.classList.add('done');
+        chip2.classList.add('active');
+      } else {
+        chip1.classList.add('done');
+        chip2.classList.add('done');
+        chip3.classList.add('active');
+      }
+    }
+
+    function show(el){ el.classList.remove('hidden'); }
+    function hide(el){ el.classList.add('hidden'); }
+
+    function setNote(noteEl, msg, showIt){
+      if (!noteEl) return;
+      noteEl.textContent = msg || '';
+      noteEl.classList.toggle('show', Boolean(showIt));
+    }
+
+    function normalizeIdentifier(value){
+      return (value || '').trim();
+    }
+
+    function isValidMobile(value){
+      return /^\d{10}$/.test(value);
+    }
+
+    function isValidEmail(value){
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    function goToStep1(){
+      show(step1); hide(step2); hide(step3);
+      setChips(1);
+      cardTitle.textContent = 'Enter your email or mobile number';
+      cardSubtitle.textContent = 'We will send you a One Time Password (OTP) for verification.';
+      setNote(note1, '', false);
+      setNote(note2, '', false);
+      setNote(note3, '', false);
+      identifier.focus();
+      chip1.classList.remove('done');
+      chip2.classList.remove('done');
+    }
+
+    function generateOtp(){
+      generatedOtp = String(Math.floor(100000 + Math.random() * 900000));
+      return generatedOtp;
+    }
+
+    async function sendOtp(target){
+      try {
+        const res = await fetch('/api/send-otp', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ identifier: target })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to send OTP');
+        setNote(note1, data.note || 'OTP sent.', true);
+        sentTo.textContent = 'OTP sent to ' + target;
+        // Do NOT reveal the OTP in real flow
+      } catch (e) {
+        // Fallback: simulate OTP if server not available
+        const otp = generateOtp();
+        setNote(note1, 'Server offline – simulated OTP sent.', true);
+        setNote(note2, 'Demo: your OTP is ' + otp, true);
+        sentTo.textContent = 'OTP sent to ' + target;
+      }
+    }
+
+    function goToStep2(){
+      hide(step1); show(step2); hide(step3);
+      setChips(2);
+      cardTitle.textContent = 'Verify OTP';
+      cardSubtitle.textContent = 'Enter the OTP sent to your email/mobile to continue.';
+      otpInput.value = '';
+      otpInput.focus();
+    }
+
+    function goToStep3(){
+      hide(step1); hide(step2); show(step3);
+      setChips(3);
+      cardTitle.textContent = 'Add your basic details';
+      cardSubtitle.textContent = 'This helps us deliver to the correct address.';
+      const mobileEl = document.getElementById('mobile');
+      if (mobileEl && savedIdentifier && isValidMobile(savedIdentifier)) {
+        mobileEl.value = savedIdentifier;
+      }
+      document.getElementById('fullName').focus();
+    }
+
+    formStep1.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const value = normalizeIdentifier(identifier.value);
+
+      const valid = isValidMobile(value) || isValidEmail(value);
+      if (!valid) {
+        setNote(note1, 'Please enter a valid email or 10-digit mobile number.', true);
+        return;
+      }
+
+      savedIdentifier = value;
+      sendOtp(savedIdentifier);
+      goToStep2();
+    });
+
+    formStep2.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const entered = (otpInput.value || '').trim();
+      if (!/^\d{6}$/.test(entered)) {
+        setNote(note2, 'Please enter a valid 6-digit OTP.', true);
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/verify-otp', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ identifier: savedIdentifier, otp: entered })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Verification failed');
+        if (!data.verified) throw new Error('Verification failed');
+        setNote(note2, 'OTP verified successfully.', true);
+        goToStep3();
+      } catch (e) {
+        // Fallback: compare with generated OTP if server not available
+        if (entered === generatedOtp) {
+          setNote(note2, 'OTP verified successfully (offline).', true);
+          goToStep3();
+        } else {
+          setNote(note2, e.message || 'Incorrect OTP. Please try again.', true);
+        }
+      }
+    });
+
+    formStep3.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fullName = (document.getElementById('fullName').value || '').trim();
+      const address = (document.getElementById('address').value || '').trim();
+      const pincode = (document.getElementById('pincode').value || '').trim();
+      const mobile = (document.getElementById('mobile').value || '').trim();
+      const locality = (document.getElementById('locality').value || '').trim();
+      const city = (document.getElementById('city').value || '').trim();
+      const state = (document.getElementById('state').value || '').trim();
+      const altPhone = (document.getElementById('altPhone').value || '').trim();
+
+      if (!fullName) {
+        setNote(note3, 'Please fill your name.', true);
+        return;
+      }
+      if (!isValidMobile(mobile)) {
+        setNote(note3, 'Please enter a valid 10-digit mobile number.', true);
+        return;
+      }
+      if (!/^\d{6}$/.test(pincode)) {
+        setNote(note3, 'Please enter a valid 6-digit pin code.', true);
+        return;
+      }
+      if (!locality || !address || !city || !state) {
+        setNote(note3, 'Please fill locality, address, city and state.', true);
+        return;
+      }
+      if (altPhone && !/^\d{10}$/.test(altPhone)) {
+        setNote(note3, 'Alternate phone should be 10 digits.', true);
+        return;
+      }
+
+      try {
+        const user = {
+          name: fullName,
+          contact: mobile,
+          address,
+          locality,
+          city,
+          state,
+          pincode
+        };
+        localStorage.setItem('bharosa_user', JSON.stringify(user));
+      } catch (e) {
+        // ignore storage issues
+      }
+
+      setNote(note3, 'Details saved. Redirecting to payment…', true);
+      window.setTimeout(() => {
+        window.location.href = 'payment.html';
+      }, 500);
+    });
+
+    resendOtpBtn.addEventListener('click', () => {
+      if (!savedIdentifier) return;
+      sendOtp(savedIdentifier);
+    });
+
+    backToStep1Btn.addEventListener('click', () => {
+      goToStep1();
+    });
+
+    backToStep2Btn.addEventListener('click', () => {
+      goToStep2();
+    });
+
+    if (cancelDetailsBtn) {
+      cancelDetailsBtn.addEventListener('click', () => {
+        goToStep2();
+      });
+    }
+
+    async function reverseGeocode(lat, lon) {
+      const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}`;
+      const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+      if (!res.ok) throw new Error('Reverse geocode failed');
+      return res.json();
+    }
+
+    if (useLocationBtn) {
+      useLocationBtn.addEventListener('click', () => {
+        if (!navigator.geolocation) {
+          setNote(note3, 'Geolocation is not supported in this browser.', true);
+          return;
+        }
+        setNote(note3, 'Getting your location...', true);
+
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+          try {
+            const data = await reverseGeocode(pos.coords.latitude, pos.coords.longitude);
+            const addr = data.address || {};
+
+            const localityEl = document.getElementById('locality');
+            const cityEl = document.getElementById('city');
+            const pincodeEl = document.getElementById('pincode');
+            const stateEl = document.getElementById('state');
+
+            if (localityEl) localityEl.value = localityEl.value || (addr.suburb || addr.neighbourhood || addr.village || addr.hamlet || '');
+            if (cityEl) cityEl.value = cityEl.value || (addr.city || addr.town || addr.county || addr.district || '');
+            if (pincodeEl) pincodeEl.value = pincodeEl.value || (addr.postcode || '');
+            if (stateEl && addr.state) {
+              const option = Array.from(stateEl.options).find(o => (o.value || '').toLowerCase() === String(addr.state).toLowerCase());
+              if (option) stateEl.value = option.value;
+            }
+
+            setNote(note3, 'Location filled. Please confirm your address details.', true);
+          } catch (err) {
+            setNote(note3, 'Could not auto-fill location. Please enter details manually.', true);
+          }
+        }, () => {
+          setNote(note3, 'Location permission denied. Please enter details manually.', true);
+        }, { enableHighAccuracy: false, timeout: 8000, maximumAge: 0 });
+      });
+    }
+
+    demoFillBtn.addEventListener('click', () => {
+      identifier.value = '9876543210';
+      setNote(note1, '', false);
+      identifier.focus();
+    });
+
+    // init
+    goToStep1();
+  </script>
+</body>
+</html>

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Orders – BHAROSA Store</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#0b1220;
+      --muted:#6b7280;
+      --border:rgba(15,23,42,.08);
+      --shadow:0 20px 60px rgba(2,6,23,.12);
+      --brand:#2874f0;
+      --brand-dark:#1e5fcd;
+      --accent:#22c55e;
+      --warn:#f59e0b;
+      --radius-xl:26px;
+      --radius:18px;
+      --container:1000px;
+      --header-h:76px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+
+    body{
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      background:
+        radial-gradient(900px 520px at 10% -10%, rgba(40,116,240,.18) 0%, rgba(40,116,240,0) 60%),
+        radial-gradient(900px 520px at 90% -10%, rgba(34,197,94,.18) 0%, rgba(34,197,94,0) 55%),
+        var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    a{text-decoration:none;color:inherit}
+    button{font-family:inherit}
+
+    .container{
+      max-width:min(var(--container), 94vw);
+      margin:0 auto;
+      padding:0 18px;
+    }
+
+    /* Topbar */
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:90;
+      backdrop-filter:saturate(160%) blur(10px);
+      background:linear-gradient(180deg, rgba(40,116,240,.95), rgba(30,95,205,.95));
+      border-bottom:1px solid rgba(255,255,255,.15);
+    }
+
+    .topbar-inner{
+      height:var(--header-h);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      letter-spacing:.02em;
+    }
+    .brand img{height:36px}
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:12px 16px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.28);
+      background:rgba(255,255,255,.16);
+      font-weight:800;
+      font-size:13px;
+      color:#fff;
+      transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .pill:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.22);
+      box-shadow:0 8px 24px rgba(0,0,0,.15);
+    }
+
+    /* Page */
+    .wrap{padding:28px 0 72px}
+
+    /* Cards */
+    .card{
+      background:linear-gradient(180deg, #ffffff, #fbfdff);
+      border:1px solid var(--border);
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      margin-bottom:20px;
+      animation:fadeUp .35s ease both;
+    }
+
+    @keyframes fadeUp{
+      from{opacity:0; transform:translateY(8px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    .head{
+      padding:18px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      background:
+        linear-gradient(180deg, rgba(246,247,251,1), rgba(255,255,255,1));
+    }
+
+    .head strong{
+      font-size:14px;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      color:#334155;
+    }
+
+    /* Status chips */
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#f8fafc;
+      font-weight:900;
+      font-size:12px;
+      letter-spacing:.02em;
+    }
+
+    .chip.good{
+      background:rgba(34,197,94,.14);
+      border-color:rgba(34,197,94,.28);
+      color:#065f46;
+    }
+
+    .chip.warn{
+      background:rgba(245,158,11,.16);
+      border-color:rgba(245,158,11,.32);
+      color:#7a3600;
+    }
+
+    /* Body */
+    .body{padding:20px}
+
+    .items{
+      display:grid;
+      gap:12px;
+    }
+
+    .item{
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:16px;
+      padding:14px 16px;
+      transition:transform .15s ease, box-shadow .15s ease;
+    }
+    .item:hover{
+      transform:translateY(-1px);
+      box-shadow:0 10px 24px rgba(2,6,23,.10);
+    }
+
+    .item .t{
+      font-weight:900;
+      font-size:14px;
+      letter-spacing:.01em;
+    }
+    .item .s{
+      color:var(--muted);
+      font-weight:700;
+      font-size:12px;
+      margin-top:6px;
+    }
+
+    /* Summary */
+    .summary{
+      display:grid;
+      gap:10px;
+      margin-top:18px;
+      padding-top:14px;
+      border-top:1px dashed var(--border);
+    }
+
+    .line{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      font-weight:900;
+    }
+
+    .line small{
+      color:var(--muted);
+      font-weight:800;
+    }
+
+    .total{
+      font-size:20px;
+      color:var(--brand-dark);
+    }
+
+    /* CTA */
+    .body .chip{
+      margin-top:14px;
+      background:linear-gradient(180deg, var(--brand), var(--brand-dark));
+      border-color:transparent;
+      color:#fff;
+      box-shadow:0 10px 28px rgba(40,116,240,.35);
+    }
+    .body .chip:hover{
+      transform:translateY(-1px);
+      box-shadow:0 14px 36px rgba(40,116,240,.45);
+    }
+
+    /* Note */
+    .note{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+      text-align:center;
+    }
+
+    /* Stats */
+    .stats{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      margin-top:12px;
+    }
+    .stat{
+      text-align:center;
+      padding:12px;
+      border-radius:12px;
+      background:linear-gradient(180deg, #f8fafc, #fff);
+      border:1px solid var(--border);
+    }
+    .stat-label{
+      font-size:12px;
+      font-weight:700;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+    .stat-value{
+      font-size:24px;
+      font-weight:900;
+      color:var(--brand);
+      margin-top:4px;
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none !important; animation:none !important}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <div class="topbar-inner">
+        <a class="brand" href="shop.html" aria-label="Back to store">
+          <img src="bharosa.png" alt="BHAROSA" />
+        </a>
+        <a class="pill" href="shop.html">Shop more</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container wrap">
+    <div class="card">
+      <div class="head">
+        <strong>Orders</strong>
+        <div class="actions">
+          <button class="btn btn-primary" id="refresh">Refresh</button>
+          <button class="btn btn-ghost" id="toggle">Show My Orders</button>
+        </div>
+      </div>
+      <div class="body">
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">Pending</div>
+            <div class="stat-value" id="pendingCount">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Delivered</div>
+            <div class="stat-value" id="deliveredCount">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="list"></div>
+    <div class="note" id="note">Loading your orders…</div>
+  </main>
+
+  <script>
+    function money(n){return '₹' + Number(n || 0).toFixed(0)}
+    function chipForStatus(s){
+      if (s === 'PAID' || s === 'PLACED') return 'chip good';
+      return 'chip warn';
+    }
+    function escapeHtml(str){
+      return String(str || '')
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'",'&#039;');
+    }
+    function loadUser(){
+      try {
+        return JSON.parse(localStorage.getItem('bharosa_user') || 'null');
+      } catch (e) { return null; }
+    }
+
+    function showToast(msg) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = msg;
+      toast.style.cssText = `
+        position:fixed;
+        bottom:20px;
+        left:50%;
+        transform:translateX(-50%);
+        background:var(--brand);
+        color:#fff;
+        padding:12px 20px;
+        border-radius:999px;
+        font-weight:800;
+        font-size:13px;
+        z-index:9999;
+        animation:slideUp 0.3s ease;
+      `;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    function toggleUpdateForm(orderId) {
+      const form = document.getElementById(`update-${orderId}`);
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
+    async function updateOrderStatus(orderId) {
+      const status = document.getElementById(`status-${orderId}`).value;
+      const location = document.getElementById(`location-${orderId}`).value;
+      console.log('[Orders] Updating:', orderId, { status, location });
+      try {
+        const res = await fetch(`/api/orders/${orderId}/status`, {
+          method: 'PATCH',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ status, location })
+        });
+        if (res.ok) {
+          showToast('Order updated');
+          toggleUpdateForm(orderId);
+          renderOrders(); // Refresh list
+        } else {
+          const err = await res.json();
+          console.error('[Orders] Update failed:', err);
+          showToast('Failed to update');
+        }
+      } catch (e) {
+        console.error('[Orders] Update error:', e);
+        showToast('Error updating order');
+      }
+    }
+
+    async function fetchOrders(){
+      try {
+        const res = await fetch('/api/orders');
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        return data.orders || [];
+      } catch (e) {
+        console.error(e);
+        return [];
+      }
+    }
+
+    function renderOrder(order){
+      const items = order.totals && order.totals.items ? order.totals.items : [];
+      const isAdmin = true; // TODO: check admin role
+      return `
+        <div class="card">
+          <div class="head">
+            <strong>${order.id}</strong>
+            <div class="chip ${order.status === 'PAID' ? 'good' : 'warn'}">${order.status}</div>
+          </div>
+          <div class="body">
+            <div class="chip" style="margin-bottom:12px">Payment: ${order.paymentMethod || '—'}</div>
+            <div class="items">${items.map(it => `
+              <div class="item">
+                <div class="t">${escapeHtml(it.name)}</div>
+                <div class="s">${money(it.price)} × ${it.qty}</div>
+              </div>
+            `).join('')}</div>
+            <div class="summary">
+              <div class="line"><small>Total MRP</small><span>${money(order.totals.totalMrp)}</span></div>
+              <div class="line"><small>Discount</small><span>− ${money(order.totals.discount)}</span></div>
+              <div class="line total"><small>Total Amount</small><span>${money(order.totals.payable)}</span></div>
+            </div>
+            ${isAdmin ? `
+              <div class="admin-controls" style="margin-top:16px">
+                <button class="btn btn-ghost" onclick="toggleUpdateForm('${order.id}')">Update Status/Location</button>
+                <div id="update-${order.id}" style="display:none; margin-top:12px; padding:12px; background:#f8fafc; border-radius:12px;">
+                  <div style="display:grid; gap:8px">
+                    <select id="status-${order.id}" style="padding:8px; border:1px solid var(--border); border-radius:8px;">
+                      <option value="PLACED">Placed</option>
+                      <option value="SHIPPED">Shipped</option>
+                      <option value="DELIVERED">Delivered</option>
+                    </select>
+                    <input type="text" id="location-${order.id}" placeholder="Current location (optional)" style="padding:8px; border:1px solid var(--border); border-radius:8px;">
+                    <button class="btn btn-primary" onclick="updateOrderStatus('${order.id}')">Update</button>
+                  </div>
+                </div>
+              </div>
+            ` : ''}
+            <div style="margin-top:12px">
+              <a class="chip" href="order.html?id=${encodeURIComponent(order.id)}">View Details</a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      let showMyOrders = false;
+      document.getElementById('refresh').addEventListener('click', fetchOrders);
+      document.getElementById('toggle').addEventListener('click', () => {
+        showMyOrders = !showMyOrders;
+        document.getElementById('toggle').textContent = showMyOrders ? 'Show All Orders' : 'Show My Orders';
+        renderOrders();
+      });
+
+      async function renderOrders(){
+        const orders = await fetchOrders();
+        const listEl = document.getElementById('list');
+        const noteEl = document.getElementById('note');
+        const pendingEl = document.getElementById('pendingCount');
+        const deliveredEl = document.getElementById('deliveredCount');
+        
+        if (!orders.length) {
+          listEl.innerHTML = '';
+          noteEl.textContent = 'No orders yet.';
+          pendingEl.textContent = '0';
+          deliveredEl.textContent = '0';
+        } else {
+          const user = loadUser();
+          const filtered = showMyOrders && user ? orders.filter(o => o.customer?.email === user.email) : orders;
+          const pending = filtered.filter(o => o.status !== 'DELIVERED').length;
+          const delivered = filtered.filter(o => o.status === 'DELIVERED').length;
+          
+          listEl.innerHTML = filtered.map(renderOrder).join('');
+          noteEl.textContent = showMyOrders && user ? 'Your orders' : '';
+          pendingEl.textContent = pending;
+          deliveredEl.textContent = delivered;
+        }
+      }
+
+      (async function main(){
+        await renderOrders();
+      })();
+    });
+  </script>
+</body>
+</html>

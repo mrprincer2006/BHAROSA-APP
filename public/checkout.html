@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout – BHAROSA Store</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:rgba(15, 23, 42, .10);
+      --shadow:0 18px 55px rgba(0,0,0,.10);
+      --fk:#2874f0;
+      --fk-dark:#1e5fcd;
+      --accent:#ff8a1f;
+      --green:#2f7d4a;
+      --radius:22px;
+      --container:1200px;
+      --header-h:72px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:Inter,system-ui,-apple-system,sans-serif;
+      background:
+        radial-gradient(900px 520px at 15% 0%, rgba(40,116,240,.12) 0%, rgba(40,116,240,0) 60%),
+        radial-gradient(900px 520px at 85% 0%, rgba(255,138,31,.12) 0%, rgba(255,138,31,0) 58%),
+        var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+    button,input,select,textarea{font-family:inherit}
+
+    .container{max-width:min(var(--container), 94vw); margin:0 auto; padding:0 18px}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:80;
+      background:linear-gradient(180deg, rgba(40,116,240,1), rgba(30,95,205,1));
+      border-bottom:1px solid rgba(255, 255, 255, .10);
+    }
+
+    .topbar-inner{
+      height:var(--header-h);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .brand{display:flex;align-items:center;gap:10px;font-weight:950}
+    .brand img{height:34px}
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.22);
+      background:rgba(255,255,255,.12);
+      font-weight:900;
+      font-size:13px;
+      cursor:pointer;
+      color:#fff;
+    }
+
+    .wrap{padding:18px 0 60px}
+
+    .layout{display:grid; grid-template-columns: 1.1fr .9fr; gap:16px; align-items:start}
+
+    .card{
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(15, 23, 42, .10);
+      border-radius:var(--radius);
+      box-shadow:0 18px 60px rgba(0,0,0,.10);
+      overflow:hidden;
+    }
+
+    .head{
+      padding:16px;
+      border-bottom:1px solid rgba(15,23,42,.06);
+      background:linear-gradient(180deg, rgba(246,247,251,1), rgba(255,255,255,1));
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .head strong{font-size:14px;letter-spacing:.02em}
+
+    .body{padding:16px}
+
+    .field{display:grid; gap:8px}
+    .field label{font-size:12px; color:var(--muted); font-weight:950; letter-spacing:.08em; text-transform:uppercase}
+
+    input, textarea, select{
+      width:100%;
+      padding:14px 14px;
+      border-radius:16px;
+      border:1px solid rgba(15, 23, 42, .12);
+      background:#fff;
+      font-size:15px;
+      font-weight:750;
+      outline:none;
+      transition: box-shadow .15s ease, border .15s ease;
+    }
+    textarea{min-height:110px; resize:vertical}
+    input:focus,textarea:focus,select:focus{border-color:rgba(40,116,240,.34); box-shadow:0 0 0 4px rgba(40,116,240,.12)}
+
+    .grid2{display:grid; grid-template-columns: 1fr 1fr; gap:12px}
+
+    .radio-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:8px}
+    .radio{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(15,23,42,.10);
+      background:rgba(15,23,42,.02);
+      font-weight:900;
+      cursor:pointer;
+      user-select:none;
+    }
+    .radio input{width:18px;height:18px}
+
+    .items{display:grid; gap:10px}
+    .item{
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      border-radius:18px;
+      padding:12px;
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:10px;
+      align-items:center;
+    }
+    .item .t{font-weight:950; font-size:13px}
+    .item .s{color:var(--muted); font-weight:850; font-size:12px; margin-top:4px}
+
+    .qty{display:inline-flex; align-items:center; border:1px solid rgba(15,23,42,.10); border-radius:999px; overflow:hidden; background:rgba(15,23,42,.02)}
+    .qty button{border:0;background:transparent;cursor:pointer;width:34px;height:34px;font-weight:950;font-size:16px}
+    .qty span{width:36px;text-align:center;font-weight:950;font-size:13px}
+
+    .summary{display:grid; gap:10px}
+    .line{display:flex; align-items:center; justify-content:space-between; gap:12px; font-weight:950}
+    .line small{color:var(--muted); font-weight:900}
+    .total{font-size:18px}
+
+    .btn{
+      border:0;
+      cursor:pointer;
+      padding:14px 16px;
+      border-radius:16px;
+      font-weight:950;
+      font-size:14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      transition: transform .15s ease, box-shadow .15s ease;
+      width:100%;
+    }
+    .btn-primary{background:var(--fk); color:#fff; box-shadow:0 18px 44px rgba(40,116,240,.22)}
+    .btn-primary:hover{transform:translateY(-1px); box-shadow:0 22px 55px rgba(40,116,240,.26)}
+
+    .btn-ghost{background:rgba(15,23,42,.04); border:1px solid rgba(15,23,42,.10); color:#0f172a}
+
+    .note{margin-top:10px;color:var(--muted); font-size:12px; font-weight:800; line-height:1.6}
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform: translateX(-50%) translateY(16px);
+      background:rgba(15, 23, 42, .92);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:999px;
+      padding:12px 14px;
+      font-weight:900;
+      font-size:13px;
+      box-shadow:0 18px 55px rgba(0,0,0,.24);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
+      z-index:140;
+      max-width:min(720px, 92vw);
+      text-align:center;
+    }
+    .toast.show{opacity:1; transform: translateX(-50%) translateY(0)}
+
+    @media (max-width: 980px){
+      .layout{grid-template-columns:1fr}
+    }
+
+    @media (max-width: 520px){
+      .grid2{grid-template-columns:1fr}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none !important; animation:none !important}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <div class="topbar-inner">
+        <a class="brand" href="shop.html" aria-label="Back to store">
+          <img src="bharosa.png" alt="BHAROSA" />
+        </a>
+        <a class="pill" href="shop.html">Continue shopping</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container wrap">
+    <div class="layout">
+      <section class="card">
+        <div class="head"><strong>Delivery Address</strong></div>
+        <div class="head">
+          <div class="chip">Cart Summary</div>
+          <button class="btn btn-ghost" id="refreshCart" type="button">Reload Cart</button>
+        </div>
+        <div class="body">
+          <div class="grid2">
+            <div class="field">
+              <label for="fullName">Name</label>
+              <input id="fullName" placeholder="Name" required />
+            </div>
+            <div class="field">
+              <label for="mobile">Mobile</label>
+              <input id="mobile" placeholder="10-digit mobile" maxlength="10" inputmode="numeric" required />
+            </div>
+          </div>
+
+          <div class="grid2" style="margin-top:12px">
+            <div class="field">
+              <label for="email">Email (for receipt)</label>
+              <input id="email" placeholder="name@gmail.com" inputmode="email" />
+            </div>
+            <div class="field">
+              <label for="pincode">Pincode</label>
+              <input id="pincode" placeholder="6-digit pincode" maxlength="6" inputmode="numeric" required />
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:12px">
+            <label for="addressLine">Address</label>
+            <textarea id="addressLine" placeholder="House/Flat, Street, Area, Landmark" required></textarea>
+          </div>
+
+          <div class="grid2" style="margin-top:12px">
+            <div class="field">
+              <label for="city">City</label>
+              <input id="city" placeholder="City" required />
+            </div>
+            <div class="field">
+              <label for="state">State</label>
+              <input id="state" placeholder="State" required />
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:12px">
+            <label>Payment Method</label>
+            <div class="radio-row" role="radiogroup" aria-label="Payment">
+              <label class="radio"><input type="radio" name="pay" value="ONLINE" checked /> UPI / Card</label>
+              <label class="radio"><input type="radio" name="pay" value="COD" /> Cash on Delivery</label>
+            </div>
+          </div>
+
+          <div style="margin-top:14px">
+            <button class="btn btn-primary" id="place" type="button">Place Order</button>
+            <div class="note">Online payments open Razorpay checkout when server has Razorpay keys configured. COD places the order directly.</div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="head"><strong>Order Summary</strong></div>
+        <div class="body">
+          <div class="items" id="items"></div>
+
+          <div class="summary" style="margin-top:14px">
+            <div class="line"><small>Total MRP</small><span id="totalMrp">₹0</span></div>
+            <div class="line"><small>Discount</small><span id="discount">₹0</span></div>
+            <div class="line total"><small>Total Amount</small><span id="payable">₹0</span></div>
+          </div>
+
+          <button class="btn btn-ghost" id="clear" type="button" style="margin-top:12px">Clear cart</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("OiutcKIqDia1H2hGu"); // Your EmailJS public key
+    })();
+  </script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    function money(n){return '₹' + Number(n || 0).toFixed(0)}
+    function isMobile(v){return /^\d{10}$/.test(String(v||''))}
+    function isPin(v){return /^\d{6}$/.test(String(v||''))}
+
+    async function loadCart(){
+      try {
+        const res = await fetch('/api/cart', {
+          headers: {
+            'X-User-ID': 'anonymous' // Use anonymous consistently
+          }
+        });
+        
+        if (res.ok) {
+          const backendCart = await res.json();
+          console.log('[Checkout] Loaded cart from backend:', backendCart);
+          
+          // Convert backend cart structure to frontend format
+          const cart = {};
+          if (backendCart.items && Array.isArray(backendCart.items)) {
+            backendCart.items.forEach(item => {
+              cart[item.id] = item.qty;
+            });
+          }
+          
+          // Store backend cart for later use
+          window.backendCart = backendCart;
+          
+          console.log('[Checkout] Converted cart for frontend:', cart);
+          return cart;
+        } else {
+          // Fallback to localStorage if backend not available
+          console.log('[Checkout] Backend not available, using localStorage');
+          const raw = localStorage.getItem('bharosa_cart');
+          const cart = JSON.parse(raw || '{}') || {};
+          console.log('[Checkout] Fallback cart from localStorage:', cart);
+          return cart;
+        }
+      } catch (e) {
+        console.error('[Checkout] Cart load error:', e);
+        // Fallback to localStorage
+        const raw = localStorage.getItem('bharosa_cart');
+        const cart = JSON.parse(raw || '{}') || {};
+        console.log('[Checkout] Fallback cart from localStorage:', cart);
+        return cart;
+      }
+    }
+    function saveCart(cart){
+      try { localStorage.setItem('bharosa_cart', JSON.stringify(cart)); } catch (e) {}
+    }
+
+    function loadUser(){
+      try {
+        return JSON.parse(localStorage.getItem('bharosa_user') || 'null');
+      } catch (e) { return null; }
+    }
+
+    let toastTimer = null;
+    function showToast(msg){
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      if (toastTimer) window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => t.classList.remove('show'), 1800);
+    }
+
+    async function fetchProducts(){
+      const res = await fetch('/api/products');
+      if (!res.ok) throw new Error('products');
+      return (await res.json()).products;
+    }
+
+    function calcTotals(products, cart){
+      const items = [];
+      let totalMrp = 0;
+      let totalPrice = 0;
+
+      for (const [id, qtyRaw] of Object.entries(cart || {})) {
+        const qty = Math.max(0, Number(qtyRaw || 0));
+        if (!qty) continue;
+        const p = products.find(x => x.id === id);
+        if (!p) continue;
+        const lineMrp = p.mrp * qty;
+        const linePrice = p.price * qty;
+        totalMrp += lineMrp;
+        totalPrice += linePrice;
+        items.push({ id, name:p.name, price:p.price, mrp:p.mrp, qty, lineMrp, linePrice });
+      }
+
+      return { items, totalMrp, totalPrice, discount: Math.max(0, totalMrp - totalPrice), payable: totalPrice };
+    }
+
+    function renderSummary(cartData){
+      const itemsEl = document.getElementById('items');
+      const totalMrpEl = document.getElementById('totalMrp');
+      const discountEl = document.getElementById('discount');
+      const totalEl = document.getElementById('payable');
+      
+      // Handle both backend cart structure and fallback
+      const items = cartData.items || [];
+      const totals = cartData.totals || {};
+      
+      if (!items || !items.length) {
+        itemsEl.innerHTML = '<div class="note">Cart is empty</div>';
+        totalMrpEl.textContent = '₹0';
+        discountEl.textContent = '₹0';
+        totalEl.textContent = '₹0';
+        return;
+      }
+      
+      itemsEl.innerHTML = items.map(it => `
+        <div class="item">
+          <div class="t">${escapeHtml(it.name)}</div>
+          <div class="s">${money(it.price)} × ${it.qty}</div>
+        </div>
+      `).join('');
+      
+      totalMrpEl.textContent = money(totals.totalMrp || 0);
+      discountEl.textContent = '− ' + money(totals.discount || 0);
+      totalEl.textContent = money(totals.payable || 0);
+    }
+
+    function escapeHtml(str){
+      return String(str || '')
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'",'&#039;');
+    }
+
+    async function createOrder(payload){
+      try {
+        // Try backend checkout API first
+        const res = await fetch('/api/checkout', {
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+            'X-User-ID': localStorage.getItem('bharosa_user_id') || 'anonymous'
+          },
+          body: JSON.stringify(payload)
+        });
+        
+        if (res.ok) {
+          const data = await res.json();
+          console.log('[Checkout] Order created via backend:', data);
+          return data.order;
+        } else {
+          // Fallback to mock order
+          console.log('[Checkout] Backend not available, using mock order');
+          return createMockOrder(payload);
+        }
+      } catch (e) {
+        console.log('[Checkout] Backend error, using mock order:', e);
+        return createMockOrder(payload);
+      }
+    }
+
+    // Fallback for COD when server not running
+    function createMockOrder(payload){
+      const mockId = 'mock_' + Math.random().toString(16).slice(2) + '_' + Date.now();
+      const mockOrder = {
+        id: mockId,
+        createdAt: new Date().toISOString(),
+        status: 'PLACED',
+        paymentMethod: payload.paymentMethod,
+        totals: calcTotals(products, payload.cart),
+        address: payload.address,
+        customer: payload.customer || {},
+        payment: {}
+      };
+      try {
+        localStorage.setItem('bharosa_mock_order', JSON.stringify(mockOrder));
+      } catch (e) {}
+      return mockOrder;
+    }
+
+    async function createRazorpayOrder(orderId){
+      const res = await fetch(`/api/orders/${encodeURIComponent(orderId)}/razorpay-order`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'}
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data && data.error ? data.error : 'Razorpay order failed');
+      return data;
+    }
+
+    async function confirmPayment(orderId, response){
+      const res = await fetch(`/api/orders/${encodeURIComponent(orderId)}/confirm`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(response)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data && data.error ? data.error : 'Confirm failed');
+      return data.order;
+    }
+
+    function selectedPayment(){
+      const el = document.querySelector('input[name="pay"]:checked');
+      return el ? el.value : 'ONLINE';
+    }
+
+    function getAddress(){
+      return {
+        fullName: (document.getElementById('fullName').value || '').trim(),
+        mobile: (document.getElementById('mobile').value || '').trim(),
+        email: (document.getElementById('email').value || '').trim(),
+        pincode: (document.getElementById('pincode').value || '').trim(),
+        addressLine: (document.getElementById('addressLine').value || '').trim(),
+        city: (document.getElementById('city').value || '').trim(),
+        state: (document.getElementById('state').value || '').trim()
+      };
+    }
+
+    function validateAddress(a){
+      if (!a.fullName) return 'Enter name';
+      if (!isMobile(a.mobile)) return 'Enter valid 10-digit mobile';
+      if (!isPin(a.pincode)) return 'Enter valid 6-digit pincode';
+      if (!a.addressLine) return 'Enter address';
+      if (!a.city) return 'Enter city';
+      if (!a.state) return 'Enter state';
+      return null;
+    }
+
+    let products = [];
+    let totals = null;
+
+    async function main(){
+      const u = loadUser();
+      if (u) {
+        document.getElementById('fullName').value = u.name || '';
+        document.getElementById('mobile').value = u.contact || '';
+        document.getElementById('pincode').value = u.pincode || '';
+        document.getElementById('addressLine').value = u.address || '';
+        document.getElementById('city').value = u.city || '';
+        document.getElementById('state').value = u.state || '';
+      }
+
+      products = await fetchProducts().catch(() => []);
+      
+      async function refreshCart(){
+        const cart = await loadCart();
+        // Use backend cart totals if available
+        if (window.backendCart && window.backendCart.totals) {
+          totals = window.backendCart.totals;
+          // Use backend items for rendering
+          renderSummary(window.backendCart);
+        } else {
+          // Fallback to calculating from products
+          totals = calcTotals(products, cart);
+          renderSummary(totals);
+        }
+      }
+      
+      await refreshCart();
+
+      // Refresh cart if storage changes (e.g., user adds items in another tab)
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'bharosa_cart') refreshCart();
+      });
+
+      document.getElementById('items').addEventListener('click', (e) => {
+        const host = e.target.closest('.qty');
+        if (!host) return;
+        const id = host.getAttribute('data-id');
+        const act = e.target.getAttribute('data-act');
+        const cart2 = loadCart();
+        const qty = cart2[id] || 0;
+        if (act === 'inc') cart2[id] = qty + 1;
+        if (act === 'dec') {
+          const next = Math.max(0, qty - 1);
+          if (next === 0) delete cart2[id]; else cart2[id] = next;
+        }
+        saveCart(cart2);
+        refreshCart();
+      });
+
+      document.getElementById('clear').addEventListener('click', () => {
+        saveCart({});
+        refreshCart();
+        showToast('Cart cleared');
+      });
+
+      document.getElementById('refreshCart').addEventListener('click', () => {
+        refreshCart();
+        showToast('Cart reloaded');
+      });
+
+      document.getElementById('place').addEventListener('click', async () => {
+        try {
+          // Check backend cart first
+          const backendCart = window.backendCart;
+          const cartNow = await loadCart();
+          
+          // Check if cart has items (either backend or converted format)
+          const hasItems = (backendCart && backendCart.items && backendCart.items.length > 0) || 
+                          (cartNow && Object.keys(cartNow).length > 0);
+          
+          if (!hasItems) {
+            showToast('Cart is empty');
+            return;
+          }
+
+          const address = {
+            fullName: document.getElementById('fullName').value.trim(),
+            mobile: document.getElementById('mobile').value.trim(),
+            pincode: document.getElementById('pincode').value.trim(),
+            addressLine: document.getElementById('addressLine').value.trim(),
+            city: document.getElementById('city').value.trim(),
+            state: document.getElementById('state').value.trim(),
+            email: document.getElementById('email').value.trim()
+          };
+
+          const paymentMethod = selectedPayment();
+          showToast('Creating order…');
+
+          // Use backend cart if available, otherwise use converted cart
+          const orderPayload = {
+            cart: backendCart || cartNow,
+            address,
+            customer: { email: address.email, name: address.fullName, contact: address.mobile },
+            paymentMethod
+          };
+
+          const order = await createOrder(orderPayload).catch((e) => {
+            // If server not reachable and COD, fallback to mock order
+            if (paymentMethod === 'COD') {
+              showToast('Server offline – creating offline order');
+              return createMockOrder(orderPayload);
+            }
+            throw e;
+          });
+
+          if (paymentMethod === 'COD') {
+            showToast('Order placed (COD)');
+            // Send receipt via EmailJS
+            if (order.customer?.email) {
+              emailjs.send("service_9fq82y5", "template_abc123def", {
+                to_name: order.customer.name,
+                order_id: order.id,
+                total: `₹${order.totals.payable}`,
+                to_email: order.customer.email,
+                address: [order.address.addressLine, order.address.city, order.address.state, order.address.pincode].filter(Boolean).join(', ')
+              })
+              .then(() => showToast('Receipt sent via EmailJS'))
+              .catch((e) => {
+                console.error('[EmailJS] failed:', e);
+                showToast('Failed to send receipt');
+              });
+            } else {
+              showToast('No email provided; receipt not sent');
+            }
+            window.location.href = `order.html?id=${encodeURIComponent(order.id)}`;
+            return;
+          }
+
+          const rzpData = await createRazorpayOrder(order.id);
+
+          const options = {
+            key: rzpData.keyId,
+            amount: rzpData.amountPaise,
+            currency: rzpData.currency,
+            name: 'BHAROSA',
+            description: 'Order Payment',
+            image: 'bharosa.png',
+            order_id: rzpData.razorpayOrderId,
+            prefill: {
+              name: address.fullName,
+              email: address.email,
+              contact: address.mobile
+            },
+            theme: { color: '#2874f0' },
+            handler: async function (response) {
+              try {
+                showToast('Confirming payment…');
+                await confirmPayment(order.id, response);
+                saveCart({});
+                // Send receipt via EmailJS for online payments too
+                if (order.customer?.email) {
+                  emailjs.send("service_9fq82y5", "template_abc123def", {
+                    to_name: order.customer.name,
+                    order_id: order.id,
+                    total: `₹${order.totals.payable}`,
+                    to_email: order.customer.email,
+                    address: [order.address.addressLine, order.address.city, order.address.state, order.address.pincode].filter(Boolean).join(', ')
+                  })
+                  .then(() => showToast('Receipt sent via EmailJS'))
+                  .catch((e) => {
+                    console.error('[EmailJS] failed:', e);
+                    showToast('Failed to send receipt');
+                  });
+                }
+                window.location.href = `order.html?id=${encodeURIComponent(order.id)}`;
+              } catch (e) {
+                showToast('Payment confirmed but status update failed');
+              }
+            }
+          };
+
+          const rzp = new Razorpay(options);
+          rzp.on('payment.failed', function () {
+            showToast('Payment failed');
+          });
+          rzp.open();
+        } catch (e) {
+          showToast(String(e && e.message ? e.message : e));
+        }
+      });
+    }
+
+    main().catch(() => showToast('Please start the server to use checkout'));
+  </script>
+</body>
+</html>
