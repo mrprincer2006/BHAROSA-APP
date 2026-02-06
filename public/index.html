@@ -606,7 +606,7 @@
     .carousel-track {
       display: flex;
       gap: 60px;
-      animation: scrollLogos 20s linear infinite;
+      animation: scrollLogos 10s linear infinite;
       padding: 6px 24px;
     }
 
@@ -640,6 +640,13 @@
       .section-head{margin-bottom:38px}
       .story-box{padding:26px}
       .philosophy{padding:32px}
+    }
+
+    /* MOBILE LOGO CAROUSEL SPEED */
+    @media (max-width: 768px) {
+      .carousel-track {
+        animation: scrollLogos 6s linear infinite;
+      }
     }
 
     .founder {
